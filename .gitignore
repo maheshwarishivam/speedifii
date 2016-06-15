@@ -212,7 +212,7 @@ lib/
 *.sym
 
 ### NetBeans
-nbproject/private/
+nbproject/
 nbbuild/
 dist/
 nbdist/
