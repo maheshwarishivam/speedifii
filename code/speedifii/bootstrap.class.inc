@@ -87,7 +87,7 @@ class Bootstrap
 
         define('PLATFORM', isset($_GET['p']) ? $_GET['p'] : 'app');
 
-        define('CONTROLLER', isset($_GET['c']) ? $_GET['c'] : 'Index');
+        define('CONTROLLER', isset($_GET['c']) ? $_GET['c'] : 'index');
 
         define('ACTION', isset($_GET['a']) ? $_GET['a'] : 'index');
 
