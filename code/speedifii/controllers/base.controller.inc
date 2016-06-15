@@ -51,15 +51,6 @@ abstract class BaseController
      */
     protected final function sendOK()
     {
-        Logger::getLogger()->debug("How are you?");
-        Logger::getLogger()->info("How are you?");
-        Logger::getLogger()->notice("How are you?");
-        Logger::getLogger()->warning("How are you?");
-        Logger::getLogger()->error("How are you?");
-        Logger::getLogger()->critical("How are you?");
-        Logger::getLogger()->alert("How are you?");
-        Logger::getLogger()->emergency("How are you?",array($this->res));
-
         $this->res->setStatus(200);
         $this->render();
     }
