@@ -90,6 +90,16 @@ class Logger
 
     /**
      * Collect data to log
+     *
+     * The message MUST be a string or object implementing __toString().
+     *
+     * The message MAY contain placeholders in the form: {foo} where foo
+     * will be replaced by the context data in key "foo".
+     *
+     * The context array can contain arbitrary data, the only assumption that
+     * can be made by implementors is that if an Exception instance is given
+     * to produce a stack trace, it MUST be in a key named "exception".
+     *
      * @param string $logLevel
      * @param $message
      * @param array $context
@@ -148,6 +158,9 @@ class Logger
         } catch (\RuntimeException $e) {
             //TODO: Log to nginx error log
             var_dump($e);
+        } catch (\Exception $ex) {
+            //TODO: Log to nginx error log
+            var_dump($ex);
         }
     }
 

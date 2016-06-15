@@ -135,7 +135,7 @@ class Response
      */
     public function setResponseFormat($responseFormat = 'HTML')
     {
-        $this->responseFormat = ($responseFormat != 'HTML' || $responseFormat != 'JSON') ? $responseFormat : 'HTML';
+        $this->responseFormat = ($responseFormat == 'HTML' || $responseFormat == 'JSON') ? $responseFormat : 'HTML';
     }
 
     /**

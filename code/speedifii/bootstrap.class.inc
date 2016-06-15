@@ -101,10 +101,10 @@ class Bootstrap
         require CORE_CONFIG_PATH . 'defaults.config.inc';
 
         //Load Application's configuration files
-        require CONFIG_PATH . 'application.config.inc';
-        require CONFIG_PATH . 'session.config.inc';
-        require CONFIG_PATH . 'autoload.config.inc';
-        require CONFIG_PATH . 'log.config.inc';
+        include CONFIG_PATH . 'application.config.inc';
+        include CONFIG_PATH . 'session.config.inc';
+        include CONFIG_PATH . 'autoload.config.inc';
+        include CONFIG_PATH . 'log.config.inc';
 
         //Load other required classes
         require CORE_PATH . 'loader.class.inc';
