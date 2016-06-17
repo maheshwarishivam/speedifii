@@ -29,6 +29,19 @@ class IndexController extends BaseController
         //Write application logs after output is sent
         //TODO: Write application logs
     }
+    
+    /**
+     * @inheritDoc
+     */
+    public function ViewAction()
+    {
+        $this->res->setBody(array('title' => 'Welcome!', 'message' => 'Hello SpeediFii view'));
+        $this->res->setHeader("AuthToken", 'sdsdhkjsdkjshd');
+        $this->res->setCookie("WBSessionTxT", "kjshdkshdkjsjd", $GLOBALS['config']['session']['timeout']);
+        $this->sendOK();
+    }
+    
+    
 }
 
 /* EOF */
