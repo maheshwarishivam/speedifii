@@ -187,7 +187,29 @@ class Bootstrap
             array_shift($request_value);
             $i++;
         }
-
+        
+        //Load route file.
+        $routes = file_get_contents(CONFIG_PATH . 'route.inc', true);
+        
+        $start = strpos($routes, '{');
+        $route_body = json_decode(substr($routes, $start));
+        $server_url = $request_value[0].'/'.$request_value[1].'/'.$request_value[2];
+     
+        foreach($route_body as $key => $value){
+            
+            $route_url_method = explode(' ', $key);
+            $route_url = explode(':', $route_url_method[1]);
+            $route_variable = count($route_url) + 2;
+            $main_route_url = trim($route_url[0], '/');
+            
+            if( $route_url_method[0] == $_SERVER['REQUEST_METHOD'] && $server_url === $main_route_url && $route_variable == count($request_value)){
+                $request_value[0] = $value->platform; 
+                $request_value[1] = $value->controller; 
+                $request_value[2] = $value->action; 
+            }
+            
+            
+        }
 
         define('PLATFORM', (isset($request_value[0]) && !empty($request_value[0])) ? $request_value[0] : 'app');
 
