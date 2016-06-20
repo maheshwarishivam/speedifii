@@ -21,13 +21,7 @@ class IndexController extends BaseController
     public function IndexAction()
     {
         // TODO: Implement IndexAction() method.
-        $this->res->setBody(array('title' => 'Welcome!', 'message' => 'Hello SpeediFii'));
-        $this->res->setHeader("AuthToken", 'sdsdhkjsdkjshd');
-        $this->res->setCookie("WBSessionTxT", "kjshdkshdkjsjd", $GLOBALS['config']['session']['timeout']);
         $this->sendOK();
-
-        //Write application logs after output is sent
-        //TODO: Write application logs
     }
     
     /**
@@ -35,9 +29,7 @@ class IndexController extends BaseController
      */
     public function ViewAction()
     {
-        $this->res->setBody(array('title' => 'Welcome!', 'message' => 'Hello SpeediFii view'));
-        $this->res->setHeader("AuthToken", 'sdsdhkjsdkjshd');
-        $this->res->setCookie("WBSessionTxT", "kjshdkshdkjsjd", $GLOBALS['config']['session']['timeout']);
+        // TODO: Implement ViewAction() method.
         $this->sendOK();
     }
     
