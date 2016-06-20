@@ -81,19 +81,7 @@ class Bootstrap
 
         define('CORE_PATH', FRAMEWORK_PATH . 'core' . DS);
 
-        // Define platform, controller, action, for example:
 
-        // index.php?p=admin&c=Goods&a=add
-
-        define('PLATFORM', isset($_GET['p']) ? $_GET['p'] : 'app');
-
-        define('CONTROLLER', isset($_GET['c']) ? $_GET['c'] : 'index');
-
-        define('ACTION', isset($_GET['a']) ? $_GET['a'] : 'index');
-
-        define('CURR_CONTROLLER_PATH', CONTROLLER_PATH . PLATFORM . DS);
-
-        define('CURR_VIEW_PATH', VIEW_PATH . PLATFORM . DS);
 
         // Load global configuration
         global $config;
@@ -183,6 +171,33 @@ class Bootstrap
 
         //Autoload current Language
         require LANGUAGE_PATH . $GLOBALS['config']['application']['language'] . '.language.inc';
+
+        // Define platform, controller, action, for example:
+
+        // index.php/admin/Goods/add
+        // index.php?p/c/a
+
+        define('REQUEST_URI', $_SERVER['REQUEST_URI']);
+
+        $request_value = explode('/', REQUEST_URI);
+
+        $row = array_search('index.php', $request_value);
+        $i = 0;
+        while( $i <= $row ){
+            array_shift($request_value);
+            $i++;
+        }
+
+
+        define('PLATFORM', (isset($request_value[0]) && !empty($request_value[0])) ? $request_value[0] : 'app');
+
+        define('CONTROLLER', isset($request_value[1]) ? $request_value[1] : 'index');
+
+        define('ACTION', isset($request_value[2]) ? $request_value[2] : 'index');
+
+        define('CURR_CONTROLLER_PATH', CONTROLLER_PATH . PLATFORM . DS);
+
+        define('CURR_VIEW_PATH', VIEW_PATH . PLATFORM . DS);
 
         //Autoload current Controller
         require CURR_CONTROLLER_PATH . CONTROLLER . '.controller.inc';
