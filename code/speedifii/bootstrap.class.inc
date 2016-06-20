@@ -90,6 +90,7 @@ class Bootstrap
 
         //Load Application's configuration files
         include CONFIG_PATH . 'application.config.inc';
+        include CONFIG_PATH . 'database.config.inc';
         include CONFIG_PATH . 'session.config.inc';
         include CONFIG_PATH . 'autoload.config.inc';
         include CONFIG_PATH . 'log.config.inc';
@@ -189,7 +190,7 @@ class Bootstrap
         }
         
         //Load route file.
-        $routes = file_get_contents(CONFIG_PATH . 'route.inc', true);
+        $routes = file_get_contents(CONFIG_PATH . 'route.config.inc', true);
         
         $start = strpos($routes, '{');
         $route_body = json_decode(substr($routes, $start));
@@ -208,10 +209,9 @@ class Bootstrap
                 $request_value[2] = $value->action; 
             }
             
-            
-        }
-
-        define('PLATFORM', (isset($request_value[0]) && !empty($request_value[0])) ? $request_value[0] : 'app');
+        } 
+        
+        define('PLATFORM', (isset($request_value[0])) ? $request_value[0] : 'app');
 
         define('CONTROLLER', isset($request_value[1]) ? $request_value[1] : 'index');
 
