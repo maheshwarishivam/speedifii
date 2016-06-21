@@ -2,40 +2,39 @@
 
 namespace application\model;
 
-Class mysqlModel
+use speedifii\model\BaseModel;
+use speedifii\libraries\mysql\Mysql;
+
+Class mysqlModel extends BaseModel
 {
-    private $connection = null;
-    /**
-     * BaseModel constructor.
-     */
-    public function __construct()
-    {
-        $this->db();
-    }
     
-    public final function db()
-    {
+    protected function __construct() 
+    { 
+        
         $this->DB_SERVER        = $GLOBALS['config']['database']['host'];
         $this->DB_USER          = $GLOBALS['config']['database']['username'];
         $this->DB_PASSWORD      = $GLOBALS['config']['database']['password'];
         $this->DB               = $GLOBALS['config']['database']['database_name'];
         $this->PORT             = $GLOBALS['config']['database']['port'];
+        
+        $this->sql_db = new Mysql($this->DB_SERVER, $this->DB_USER, $this->DB_PASSWORD, $this->DB);
+        
+        //$name = $this->mysql_lib->fetchRowMany("select * from users where id=:id", array('id'=>4));
+        //$name = $this->mysql_lib->insert("`users`", array('name'=>'praveen', 'email'=>'pravvvvvv'));
+        //$name = $this->mysql_lib->update("`users`", array('id'=>8), array('name'=>'praveen', 'email'=>'pravvvvvv pn'));
+        //$name = $this->mysql_lib->delete("`users`", array('id'=>8));
+        
+    }
+    
+    /* public final function db()
+    {
+        
 
         $this->connection = mysqli_connect($this->DB_SERVER, $this->DB_USER, $this->DB_PASSWORD, $this->DB, $this->PORT);
         if ($this->connection->connect_error) {
             die('Connect Error: ' . $this->connection->connect_error);
         }
         mysqli_select_db($this->connection, $GLOBALS['config']['database']['database_name']) or die ("Unable to select database");
-    }
-    
-    protected final function get()
-    {
-        
-    }
-    
-    protected final function close()
-    {
-        
     }
     
     protected final function query($sql)
@@ -117,7 +116,7 @@ Class mysqlModel
 
         return $result;
     }
-    
+    */
 }
 
 

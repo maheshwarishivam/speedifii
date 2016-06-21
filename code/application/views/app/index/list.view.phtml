@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title><?php echo $title; ?></title>
+</head>
+<body>
+<?php echo $message; 
+
+$data = json_decode($list['body']);
+?>
+    <table border="1">
+        <tr>
+            <td>Sr</td>
+            <td>ID</td>
+            <td>Name</td>
+            <td>Surname</td>
+            <td>Email Id</td>
+            <td colspan="2">Action</td>
+        </tr>
+    <?php $i=1; foreach($data->data->user_list as $value){?>
+        <tr>
+            <td><?php echo $i++;?></td>
+            <td><?php echo $value->id;?></td>
+            <td><?php echo $value->name;?></td>
+            <td><?php echo $value->surname;?></td>
+            <td><?php echo $value->email;?></td>
+            <td><a href="edit/<?php echo $value->id;?>">Edit</a></td>
+            <td><a href="<?php echo $value->id;?>">Delete</a></td>
+        </tr>
+    <?php } ?>
+    </table>
+    
+</body>
+</html>

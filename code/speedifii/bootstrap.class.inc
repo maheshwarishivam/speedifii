@@ -211,11 +211,9 @@ class Bootstrap
                     $request_value[0] = $value->platform; 
                     $request_value[1] = $value->controller; 
                     $request_value[2] = $value->action; 
-                }
-//                
+                }        
             }
         } 
-        echo "<pre>";        print_r($request_value); die;
         define('PLATFORM', (isset($request_value[0])) ? $request_value[0] : 'app');
 
         define('CONTROLLER', isset($request_value[1]) ? $request_value[1] : 'index');

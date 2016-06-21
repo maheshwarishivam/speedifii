@@ -2,8 +2,6 @@
 
 namespace speedifii\model;
 
-use application\model\curlModel;
-use application\model\mysqlModel;
 
 /**
  * Class BaseModel
@@ -16,6 +14,8 @@ use application\model\mysqlModel;
      * @var request
      */
     protected $sql_db = null;
+    
+   // protected $sql_lib = null;
 
     /**
      * @var response
@@ -23,23 +23,11 @@ use application\model\mysqlModel;
     protected $curl = null;
     
     /**
-     * @var request
-     */
-    protected $model_method = 'mysql';
-    
-    
-    function setModelMethod( $method ){
-        $this->model_method = $method;
-    }
-    
-    /**
      * BaseModel constructor.
      */
     protected function __construct()
     {
-        //Create Request and Response Objects
-        $this->curl = new curlModel();
-        $this->sql_db = new mysqlModel();
+        
     }
     
     protected final function get()

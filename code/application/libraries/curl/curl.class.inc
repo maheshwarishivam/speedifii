@@ -11,13 +11,13 @@ class Curl {
     /**
      * @var CurlRequest
      */
-    private $curlReq;
+    public $curlReq;
     
     
     /**
      * @var CurlResponse
      */
-    private $curlRes;
+    public $curlRes;
     
     
     /**
@@ -59,7 +59,7 @@ class Curl {
     /**
      * Curl constructor, Create CurlRequest and CurlResponse Object.
      */
-    function __construct()
+    public function __construct()
     {
         $this->curlReq = new CurlRequest();
         $this->curlRes = new CurlResponse();
