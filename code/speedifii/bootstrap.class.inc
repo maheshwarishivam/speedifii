@@ -194,23 +194,28 @@ class Bootstrap
         
         $start = strpos($routes, '{');
         $route_body = json_decode(substr($routes, $start));
-        $server_url = $request_value[0].'/'.$request_value[1].'/'.$request_value[2];
      
         foreach($route_body as $key => $value){
-            
+
             $route_url_method = explode(' ', $key);
-            $route_url = explode(':', $route_url_method[1]);
-            $route_variable = count($route_url) + 2;
-            $main_route_url = trim($route_url[0], '/');
+            $route_url = explode('/', trim($route_url_method[1], '/')); 
             
-            if( $route_url_method[0] == $_SERVER['REQUEST_METHOD'] && $server_url === $main_route_url && $route_variable == count($request_value)){
-                $request_value[0] = $value->platform; 
-                $request_value[1] = $value->controller; 
-                $request_value[2] = $value->action; 
+            if( $route_url_method[0] == $_SERVER['REQUEST_METHOD'] && count($route_url) == count($request_value)){
+                
+                $route_url = explode(':', trim($route_url_method[1], '/'));
+                $main_route_url_array = explode('/', trim($route_url[0],'/'));
+                
+                $server_url = array_chunk($request_value, count($main_route_url_array));
+                
+                if( empty(array_diff_assoc($main_route_url_array, $server_url[0]))){ 
+                    $request_value[0] = $value->platform; 
+                    $request_value[1] = $value->controller; 
+                    $request_value[2] = $value->action; 
+                }
+//                
             }
-            
         } 
-        
+        echo "<pre>";        print_r($request_value); die;
         define('PLATFORM', (isset($request_value[0])) ? $request_value[0] : 'app');
 
         define('CONTROLLER', isset($request_value[1]) ? $request_value[1] : 'index');
