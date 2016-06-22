@@ -81,8 +81,20 @@ class Bootstrap
 
         define('CORE_PATH', FRAMEWORK_PATH . 'core' . DS);
 
+        // Define platform, controller, action, for example:
 
+        // index.php?p=admin&c=Goods&a=add
 
+        define('PLATFORM', isset($_GET['p']) ? $_GET['p'] : 'app');
+
+        define('CONTROLLER', isset($_GET['c']) ? $_GET['c'] : 'Index');
+ 
+        define('ACTION', isset($_GET['a']) ? $_GET['a'] : 'index');
+ 
+        define('CURR_CONTROLLER_PATH', CONTROLLER_PATH . PLATFORM . DS);
+
+        define('CURR_VIEW_PATH', VIEW_PATH . PLATFORM . DS);
+        
         // Load global configuration
         global $config;
         $config = array();
@@ -90,7 +102,6 @@ class Bootstrap
 
         //Load Application's configuration files
         include CONFIG_PATH . 'application.config.inc';
-        include CONFIG_PATH . 'database.config.inc';
         include CONFIG_PATH . 'session.config.inc';
         include CONFIG_PATH . 'autoload.config.inc';
         include CONFIG_PATH . 'log.config.inc';
@@ -143,7 +154,7 @@ class Bootstrap
         }
 
         // Autoload libraries
-        foreach ($GLOBALS['config']['autoload']['libraries'] as $fileName) {
+        foreach ($GLOBALS['config']['autoload']['libraries'] as $fileName) { 
             if (!empty($fileName)) {
                 require LIB_PATH . $fileName . DS . "$fileName.autoload.inc";
             }
@@ -172,16 +183,16 @@ class Bootstrap
 
         //Autoload current Language
         require LANGUAGE_PATH . $GLOBALS['config']['application']['language'] . '.language.inc';
-
+        
         // Define platform, controller, action, for example:
 
         // index.php/admin/Goods/add
         // index.php?p/c/a
-
+        
         define('REQUEST_URI', $_SERVER['REQUEST_URI']);
-
+        
         $request_value = explode('/', REQUEST_URI);
-
+       
         $row = array_search('index.php', $request_value);
         $i = 0;
         while( $i <= $row ){
@@ -190,30 +201,27 @@ class Bootstrap
         }
         
         //Load route file.
-        $routes = file_get_contents(CONFIG_PATH . 'route.config.inc', true);
+        $routes = file_get_contents(CONFIG_PATH . 'route.inc', true);
         
         $start = strpos($routes, '{');
         $route_body = json_decode(substr($routes, $start));
-     
-        foreach($route_body as $key => $value){
+        $server_url = $request_value[0].'/'.$request_value[1].'/'.$request_value[2];
 
-            $route_url_method = explode(' ', $key);
-            $route_url = explode('/', trim($route_url_method[1], '/')); 
+        foreach($route_body as $key => $value){
             
-            if( $route_url_method[0] == $_SERVER['REQUEST_METHOD'] && count($route_url) == count($request_value)){
-                
-                $route_url = explode(':', trim($route_url_method[1], '/'));
-                $main_route_url_array = explode('/', trim($route_url[0],'/'));
-                
-                $server_url = array_chunk($request_value, count($main_route_url_array));
-                
-                if( empty(array_diff_assoc($main_route_url_array, $server_url[0]))){ 
-                    $request_value[0] = $value->platform; 
-                    $request_value[1] = $value->controller; 
-                    $request_value[2] = $value->action; 
-                }        
+            $route_url_method = explode(' ', $key);
+            $route_url = explode(':', $route_url_method[1]);
+            $route_variable = count($route_url) + 2;
+            $main_route_url = trim($route_url[0], '/');
+            
+            if( $route_url_method[0] == $_SERVER['REQUEST_METHOD'] && $server_url === $main_route_url && $route_variable == count($request_value)){
+                $request_value[0] = $value->platform; 
+                $request_value[1] = $value->controller; 
+                $request_value[2] = $value->action; 
             }
-        } 
+            
+        }
+
         define('PLATFORM', (isset($request_value[0])) ? $request_value[0] : 'app');
 
         define('CONTROLLER', isset($request_value[1]) ? $request_value[1] : 'index');
@@ -223,7 +231,7 @@ class Bootstrap
         define('CURR_CONTROLLER_PATH', CONTROLLER_PATH . PLATFORM . DS);
 
         define('CURR_VIEW_PATH', VIEW_PATH . PLATFORM . DS);
-
+        
         //Autoload current Controller
         require CURR_CONTROLLER_PATH . CONTROLLER . '.controller.inc';
 
