@@ -5,31 +5,16 @@
     <title><?php echo $title; ?></title>
 </head>
 <body>
-<?php echo $message; 
+<?php echo $message;
 
-$data = json_decode($list['body']);
+$data = json_decode($list['body'])->data;
 ?>
-    <table border="1">
-        <tr>
-            <td>Sr</td>
-            <td>ID</td>
-            <td>Name</td>
-            <td>Surname</td>
-            <td>Email Id</td>
-            <td colspan="2">Action</td>
-        </tr>
-    <?php $i=1; foreach($data->data->user_list as $value){?>
-        <tr>
-            <td><?php echo $i++;?></td>
-            <td><?php echo $value->id;?></td>
-            <td><?php echo $value->name;?></td>
-            <td><?php echo $value->surname;?></td>
-            <td><?php echo $value->email;?></td>
-            <td><a href="edit/<?php echo $value->id;?>">Edit</a></td>
-            <td><a href="<?php echo $value->id;?>">Delete</a></td>
-        </tr>
-    <?php } ?>
-    </table>
-    
+    <form action="<?php echo $this->appUrl('index.php/edit/'.$data->id);?>" method="post" >
+    <p><label>ID: </label><input type="text" name="id" value="<?php echo $data->id; ?>" readonly="readonly" /></p>
+    <p><label>Name: </label><input type="text" name="name" value="<?php echo $data->fname; ?>" /></p>
+    <p><label>Surname: </label><input type="text" name="surname" value="<?php echo $data->lname; ?>" /></p>
+    <p><label>email: </label><input type="text" name="email" value="<?php echo $data->email_id; ?>" /></p>
+    <p><input type="submit" name="submit" value="Submit"/></p>
+</form>
 </body>
 </html>

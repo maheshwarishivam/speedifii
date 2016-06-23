@@ -91,7 +91,7 @@ abstract class BaseController
     public function redirect($url, $permanent = false)
     {
         $this->res->setStatus($permanent ? 301 : 302);
-        $this->res->setBody($url);
+        $this->res->setRawBody($url);
         $this->render();
     }
 
@@ -209,12 +209,14 @@ abstract class BaseController
      * @var string $view
      */
     private function render($view = NULL)
-    {
+    { 
         if (!headers_sent($filename, $linenum)) {
 
-            if ($this->res->getStatus() == 301 || $this->res->getStatus() == 302) {
+            if ($this->res->getStatus() == 301 || $this->res->getStatus() == 302) {  
+                 $rawBody = $this->res->getRawBody(); 
+
                 //Handle redirects
-                header('Location: ' . $this->res->getBody(), $this->res->getStatus());
+                header('Location: ' . $this->appUrl($rawBody) , TRUE, $this->res->getStatus());
             } else {
                 //Send HTTP Response Code
                 http_response_code($this->res->getStatus());
@@ -279,6 +281,19 @@ abstract class BaseController
             return ob_get_clean();
         }, $path);
     }
+    
+    protected final function appUrl($data = '/'){
+        
+        return $GLOBALS['config']['application']['app_url'].trim($data, '/');
+        
+    }
+    
+    protected final function apiUrl($data = '/'){
+        
+        return $GLOBALS['config']['application']['api_url'].trim($data, '/');
+        
+    }
+    
 }
 
 /* EOF */

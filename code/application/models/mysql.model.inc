@@ -3,9 +3,9 @@
 namespace application\model;
 
 use speedifii\model\BaseModel;
-use speedifii\libraries\mysql\Mysql;
+use speedifii\libraries\Mysql\Mysql;
 
-Class mysqlModel extends BaseModel
+Class MysqlModel extends BaseModel
 {
     
     protected function __construct() 

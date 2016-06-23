@@ -2,9 +2,9 @@
 
 //namespace application\model;
 
-use application\model\mysqlModel;
+use application\model\MysqlModel;
 
-class Index extends mysqlModel
+class IndexModel extends MysqlModel
 {
     
     /**

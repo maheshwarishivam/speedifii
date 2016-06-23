@@ -313,6 +313,9 @@ class Curl {
 			
             /*list($headers, $content) = explode("\r\n\r\n", $http_result, 2); */
             
+            $start_m = strpos($http_result, '[');
+            $start = strpos($http_result, '{');
+            
             if(($start_m < $start) && !empty($start_m)){
 
                 $body = substr($http_result, $start_m);
@@ -323,9 +326,7 @@ class Curl {
                 $body = substr($http_result, $start);
                 $headers = substr($http_result, 0, $start);
             }
-		
         }
-		
         $this->curlRes->setStatus($status);
         $this->curlRes->setHeaders($headers);
         $this->curlRes->setBody($body); 
