@@ -35,7 +35,7 @@ class IndexController extends BaseController
     {
         $this->index = new IndexModel();
         // TODO: Implement IndexAction() method.
-        $data = array('email' => 'ppppppp');
+        
         $where = array('id' => 6, 'name' => 'praveen');
         $result = $this->index->user_list('users', $where);
         echo "<pre>"; print_r($result); die;

@@ -17,60 +17,60 @@ class IndexCurlModel extends CurlModel
     
     public function userList($data){
         
-        $this->curl->curlReq->setUrl($data['url']);
-        $this->curl->curlReq->setMethod($data['method']);
-        $this->curl->curlReq->setHeaders($data['headers']);
+        $this->curl->setUrl($data['url']);
+        $this->curl->setMethod($data['method']);
+        $this->curl->setHeaders($data['headers']);
         $this->curl->call();
         
-        return $this->curl->curlRes->toArray();
+        return $this->curl->toArray();
     }
 
     
     public function userDetail($data){
         
-        $this->curl->curlReq->setUrl($data['url']);
-        $this->curl->curlReq->setMethod($data['method']);
-        $this->curl->curlReq->setHeaders($data['headers']);
+        $this->curl->setUrl($data['url']);
+        $this->curl->setMethod($data['method']);
+        $this->curl->setHeaders($data['headers']);
         $this->curl->call();
         
-        return $this->curl->curlRes->toArray();
+        return $this->curl->toArray();
     }    
 
     
     public function updateUserDetail($data){
         
-        $this->curl->curlReq->setUrl($data['url']);
-        $this->curl->curlReq->setMethod($data['method']);
-        $this->curl->curlReq->setHeaders($data['headers']);
-        $this->curl->curlReq->setReqType($data['reqType']);
-        $this->curl->curlReq->setRawBody($data['rawbody']);
+        $this->curl->setUrl($data['url']);
+        $this->curl->setMethod($data['method']);
+        $this->curl->setHeaders($data['headers']);
+        $this->curl->setReqType($data['reqType']);
+        $this->curl->setRawBody($data['rawbody']);
         $this->curl->call();
         
-        return $this->curl->curlRes->toArray();
+        return $this->curl->toArray();
     } 
 
     
     public function userDelete($data){
         
-        $this->curl->curlReq->setUrl($data['url']);
-        $this->curl->curlReq->setMethod($data['method']);
-        $this->curl->curlReq->setHeaders($data['headers']);
+        $this->curl->setUrl($data['url']);
+        $this->curl->setMethod($data['method']);
+        $this->curl->setHeaders($data['headers']);
         $this->curl->call();
         
-        return $this->curl->curlRes->toArray();
+        return $this->curl->toArray();
     }     
 
     
     public function addUser($data){
         
-        $this->curl->curlReq->setUrl($data['url']);
-        $this->curl->curlReq->setMethod($data['method']);
-        $this->curl->curlReq->setHeaders($data['headers']);
-        $this->curl->curlReq->setReqType($data['rawType']);
-        $this->curl->curlReq->setRawBody($data['rawBody']);
+        $this->curl->setUrl($data['url']);
+        $this->curl->setMethod($data['method']);
+        $this->curl->setHeaders($data['headers']);
+        $this->curl->setReqType($data['rawType']);
+        $this->curl->setRawBody($data['rawBody']);
         $this->curl->call();
         
-        return $this->curl->curlRes->toArray();
+        return $this->curl->toArray();
     } 
     
 }

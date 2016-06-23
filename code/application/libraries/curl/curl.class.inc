@@ -37,25 +37,55 @@ class Curl {
         return $this->curlRes;
     }
     
-    
     /**
-     * @param CurlRequest Object
+     * @var CurlRequest String
      */
-    public function setReq($req)
-    {
-        $this->curlReq = $req;
+    public function setUrl($url){
+        $this->curlReq->setUrl($url);
     }
     
+    /**
+     * @var CurlRequest String
+     */
+    public function setMethod($url){
+        $this->curlReq->setMethod($url);
+    }
     
     /**
-     * @param CurlResponse Object
+     * @var CurlRequest Array
      */
-    public function setRes($res)
-    {
-        $this->curlRes = $res;
+    public function setHeaders($url){
+        $this->curlReq->setHeaders($url);
+    }
+    
+    /**
+     * @var CurlRequest String
+     */
+    public function setReqType($url){
+        $this->curlReq->setReqType($url);
+    }
+    
+    /**
+     * @var CurlRequest String
+     */
+    public function setRawBody($url){
+        $this->curlReq->setRawBody($url);
+    }
+    
+    /**
+     * @return CurlResponse Array
+     */
+    public function toArray(){
+        return $this->curlRes->toArray();
+    }
+    
+    /**
+     * @var CurlRequest JSON
+     */
+    public function toJSON(){
+        return $this->curlRes->toJSON();
     }
 
-    
     /**
      * Curl constructor, Create CurlRequest and CurlResponse Object.
      */

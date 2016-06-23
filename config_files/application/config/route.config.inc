@@ -4,24 +4,39 @@
 
 
 {
-  "POST /model/index/view/:variable1/:variable2": {
+  "GET /": {
     "platform": "app",
     "controller": "index",
     "action": "index"
   },
-  "GET /model/index/view/:variable1/": {
+  "GET /list/": {
     "platform": "app",
     "controller": "index",
-    "action": "view"
+    "action": "list"
   },
-  "POST /platform/controller/action/:variable5/:variable6": {
-    "platform": "app",
-    "controller": "indexv",
-    "action": "index"
-  },
-  "POST /platform/controller/action/:variable7/:variable8": {
+  "GET /edit/:id": {
     "platform": "app",
     "controller": "index",
-    "action": "index"
+    "action": "edit"
+  },
+  "POST /edit/:id": {
+    "platform": "app",
+    "controller": "index",
+    "action": "edit"
+  },
+  "GET /delete/:id": {
+    "platform": "app",
+    "controller": "index",
+    "action": "delete"
+  },
+  "GET /add/": {
+    "platform": "app",
+    "controller": "index",
+    "action": "add"
+  },
+  "POST /add/": {
+    "platform": "app",
+    "controller": "index",
+    "action": "add"
   }
 }

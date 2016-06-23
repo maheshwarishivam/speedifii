@@ -40,7 +40,7 @@ class Bootstrap
      */
     private static function init()
     {
-
+ 
         // Define path constants
 
         define('DS', DIRECTORY_SEPARATOR);
@@ -218,13 +218,17 @@ class Bootstrap
 
         define('REQUEST_URI', $_SERVER['REQUEST_URI']);
 
-        $request_value = (REQUEST_URI !== '/')?explode('/', REQUEST_URI):'';
+        if(REQUEST_URI !== '/'){
+            $request_value = explode('/', REQUEST_URI);
 
-        $row = array_search('index.php', $request_value);
-        $i = 0;
-        while( $i <= $row ){
-            array_shift($request_value);
-            $i++;
+            $row = array_search('index.php', $request_value);
+            $i = 0;
+            while( $i <= $row ){
+                array_shift($request_value);
+                $i++;
+            }
+        } else {
+            $request_value = array('');
         }
         
         //Load route file.
@@ -238,7 +242,7 @@ class Bootstrap
 
             $route_url_method = explode(' ', $key);
             $route_url = explode('/', trim($route_url_method[1], '/')); 
-            $request_value_count = count($request_value);
+            $request_value_count = count($request_value); 
             if( $route_url_method[0] == $_SERVER['REQUEST_METHOD'] && count($route_url) == $request_value_count){
                 
                 $route_url = explode(':', trim($route_url_method[1], '/'));
@@ -261,8 +265,8 @@ class Bootstrap
                 }         
             }
         } 
-       
-        define('PLATFORM', isset($request_value[0]) ? $request_value[0] : 'app');
+        
+        define('PLATFORM', (isset($request_value[0]) && !empty($request_value[0])) ? $request_value[0] : 'app');
 
         define('CONTROLLER', isset($request_value[1]) ? $request_value[1] : 'index');
 
