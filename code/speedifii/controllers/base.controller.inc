@@ -231,7 +231,11 @@ abstract class BaseController
                     header($header . ': ' . $h['value'], $h['replace']);
                 }
 
-                if ($this->res->getresponseFormat() == 'JSON') {
+                if($this->res->getRawBody() != null){
+                    
+                    echo $this->res->getBody();
+                    
+                } else if ($this->res->getresponseFormat() == 'JSON') {
                     //Send JSON response
                     if ($this->res->getBody() != NULL) {
                         //Handle UTF-8 Special Chars

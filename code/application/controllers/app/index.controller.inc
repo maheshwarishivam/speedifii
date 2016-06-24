@@ -36,11 +36,12 @@ class IndexController extends BaseController
         $this->index = new IndexModel();
         // TODO: Implement IndexAction() method.
         
-        $where = array('id' => 6, 'name' => 'praveen');
-        $result = $this->index->user_list('users', $where);
+        //$where = array('id' => 6);
+        $result = $this->index->user_list('users');
+        
         echo "<pre>"; print_r($result); die;
         
-        $this->res->setBody(array('title' => 'Welcome!', 'message' => 'Hello SpeediFii'));
+        $this->res->setBody(array('title' => 'Welcome!', 'message' => 'Hello SpeediFii Mysql user List', 'list' => $result));
         $this->res->setHeader("AuthToken", 'sdsdhkjsdkjshd');
         $this->res->setCookie("WBSessionTxT", "kjshdkshdkjsjd", $GLOBALS['config']['session']['timeout']);
         $this->sendOK();

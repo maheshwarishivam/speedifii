@@ -4,10 +4,10 @@
 
 
 {
-  "GET /": {
+  "GET /listd/": {
     "platform": "app",
     "controller": "index",
-    "action": "index"
+    "action": "list"
   },
   "GET /list/": {
     "platform": "app",

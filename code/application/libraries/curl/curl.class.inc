@@ -3,7 +3,7 @@
 namespace speedifii\libraries\curl;
 
 /**
- * Class Mysql
+ * Class Curl
  * @package speedifii\libraries\curl
  */
 class Curl {

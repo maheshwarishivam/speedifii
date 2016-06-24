@@ -2,9 +2,9 @@
 
 //namespace application\model;
 
-use application\model\MysqlModel;
+use application\model\MySqlModel;
 
-class IndexModel extends MysqlModel
+class IndexModel extends MySqlModel
 {
     
     /**
@@ -15,10 +15,18 @@ class IndexModel extends MysqlModel
         parent::__construct();
     }
     
-    public function user_list($table, $data){
+    public function user_list($table){
         
-       $result = $this->sql_db->fetchRowMany("select * from users where id=:id", array('id'=>14));
-       
+        //$result = $this->db->fetchRowMany("select * from ".$table);
+        $table = array('name');
+        //$arr = array('id'=>9);
+        $result = $this->getSingle($table)->orderBy('id ASC')->limit('45')->exec('users');
+        
+        //$result = $this->insert(array('name'=>'praveen', 'email'=>'pravvvvvvr'))->exec('users');
+        //$this->update(array('name'=>'praveen', 'email'=>'prav v pn'), array('id'=>10))->exec('users');
+        //$this->delete(array('id'=>11))->exec('users');
+        
+        //$result = $this->db->insertMany('users', array('name' => 'p1', 'name' => 'p12', 'name' => 'p123'));
         
         return $result;
        

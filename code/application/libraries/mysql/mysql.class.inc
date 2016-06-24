@@ -3,13 +3,13 @@
 namespace speedifii\libraries\mysql;
 
 /**
- * Class Mysql
+ * Class MySql
  * @package speedifii\libraries\mysql
  */
-class Mysql
+class MySql
 {
     /**
-     * @var Mysql
+     * @var MySql
      */
     protected $dbh;
 
@@ -32,7 +32,7 @@ class Mysql
      * @param string $charset
      * @param array $options
      *
-     * @throws MysqlException
+     * @throws MySqlException
      */
     public function __construct($host, $user, $password, $database, $fetchMode = \PDO::FETCH_ASSOC, $charset = 'utf8', array $options = [])
     {
@@ -47,7 +47,7 @@ class Mysql
             }
 
             // use unix socket
-            if (isset($options['unixSocket']))
+            if (isset($options['unixSocket']) && !empty($options['unixSocket']))
             {
                 $dns = 'mysql:unix_socket=' . $options['unixSocket'];
             }
@@ -72,7 +72,7 @@ class Mysql
     /**
      * @param $dbh
      *
-     * @return Mysql
+     * @return MySql
      */
     protected function setDbh($dbh)
     {
@@ -90,7 +90,7 @@ class Mysql
     }
 
     /**
-     * @return Mysql
+     * @return MySql
      */
     public function close()
     {
@@ -102,7 +102,7 @@ class Mysql
     /**
      * @param int $fetchMode
      *
-     * @return Mysql
+     * @return MySql
      */
     protected function setFetchMode($fetchMode)
     {
@@ -136,7 +136,7 @@ class Mysql
     /**
      * @param \PDOStatement $cursor
      *
-     * @return Mysql
+     * @return MySql
      */
     protected function setLastStatement(\PDOStatement $cursor)
     {
@@ -162,7 +162,7 @@ class Mysql
     }
 
     /**
-     * @return Mysql
+     * @return MySql
      */
     protected function clearLastStatement()
     {
@@ -690,7 +690,7 @@ class Mysql
         $query = str_replace(':PARAM_NAMES', join(', ', $placeholder['param_names']), $query);
 
         // ----------------------------------
-
+        print_r($query);        print_r($data); die;
         $response = $this->prepareInsertReplace($query, $data);
 
         if (empty($response))

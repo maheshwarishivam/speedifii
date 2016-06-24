@@ -5,6 +5,27 @@
     <title><?php echo $title; ?></title>
 </head>
 <body>
-<?php echo $message; ?>
+<?php echo $message; //echo "<pre>"; print_r($list); die; ?>
+    <table border="1">
+        <tr>
+            <th>Sr</th>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>status</th>
+        </tr>
+    <?php 
+        $i=1; 
+        foreach($list as $value){
+    ?>
+        <tr>
+            <td><?php echo $i++;?></td>
+            <td><?php echo $value['id'];?></td>
+            <td><?php echo $value['name'];?></td>
+            <td><?php echo $value['email'];?></td>
+            <td><?php echo $value['status'];?></td>
+        </tr>
+    <?php } ?>
+    </table>
 </body>
 </html>
