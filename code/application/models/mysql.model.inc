@@ -97,8 +97,8 @@ Class MySqlModel extends BaseModel
      * @return bool
      */
     protected function closeConnection(){
-        $this->conn->close();
-        return true;
+
+        //$this->conn->close();
     }
     
     /**
@@ -272,7 +272,7 @@ Class MySqlModel extends BaseModel
      */
     protected function rawQuery($query){
         
-        $this->query = $where;
+        $this->query = $query;
         
         return $this;
         
