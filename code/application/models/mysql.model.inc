@@ -78,7 +78,7 @@ Class MySqlModel extends BaseModel
     }
     
     protected function closeConnection(){
-        $this->conn->close();
+        //$this->conn->close();
     }
     
     protected function setParams($data){
@@ -179,7 +179,7 @@ Class MySqlModel extends BaseModel
     
     protected function rawQuery($query){
         
-        $this->query = $where;
+        $this->query = $query;
         
         return $this;
         
