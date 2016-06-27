@@ -10,11 +10,6 @@ Class MySqlModel extends BaseModel
     /**
      * @var MySql Object
      */
-    private $select = null;
-    
-    /**
-     * @var MySql Object
-     */
     private $where = null;
     
     /**
@@ -47,11 +42,16 @@ Class MySqlModel extends BaseModel
      */
     private $operation_type = '';
     
+    /**
+     * @var MySql Table
+     */
+    protected $table = null;
+    
     
     /**
      * @var MySql Object
      */
-    public $db = null;//TODO: Rename to $db
+    protected $conn = null;
 
 
     public function __construct() 
@@ -61,7 +61,7 @@ Class MySqlModel extends BaseModel
         
     }
     
-    public function getConnection(){
+    protected function getConnection(){
         $this->host         = $GLOBALS['config']['database']['host'];
         $this->userName     = $GLOBALS['config']['database']['username'];
         $this->password     = $GLOBALS['config']['database']['password'];
@@ -74,45 +74,42 @@ Class MySqlModel extends BaseModel
             'unixSocket' => $GLOBALS['config']['database']['unixSocket']
         );
         
-        $this->db = new MySql($this->host, $this->userName, $this->password, $this->databaseName, $this->fetchMode, $this->charset, $option);
+        $this->conn = new MySql($this->host, $this->userName, $this->password, $this->databaseName, $this->fetchMode, $this->charset, $option);
     }
     
-    public function closeConnection(){
-        $this->db->close();
+    protected function closeConnection(){
+        $this->conn->close();
     }
     
-    public function setParams($data){
+    protected function setParams($data){
         
     }
             
-    public function getSingle($select = array()){
+    protected function getSingle(){
         
-        $this->operation_type = 'get';
-        $this->select = $select;
-        
-        return $this;
-        
-    }
-    
-    public function getMany($select = array()){
-        
-        $this->operation_type = 'get';
-        $this->select = $select;
+        $this->operation_type = 'getSingle';
         
         return $this;
         
     }
     
-    public function getCount($select = ''){
+    protected function getMany(){
         
-        $this->operation_type = 'get';
-        $this->select = $select;
+        $this->operation_type = 'getMany';
         
         return $this;
         
     }
     
-    public function where($condition = array()){
+    protected function getCount(){
+        
+        $this->operation_type = 'getCount';
+        
+        return $this;
+        
+    }
+    
+    protected function where($condition = array()){
         
         $this->where = $condition;
         
@@ -120,7 +117,7 @@ Class MySqlModel extends BaseModel
         
     }
     
-    public function orderBy($type = ''){
+    protected function orderBy($type = ''){
         
         $this->orderBy = $type;
         
@@ -128,7 +125,7 @@ Class MySqlModel extends BaseModel
         
     }
     
-    public function limit($data){
+    protected function limit($data){
         
         $this->limit = $data;
         
@@ -136,7 +133,7 @@ Class MySqlModel extends BaseModel
         
     }
     
-    public function distinct($type = ''){
+    protected function distinct($type = ''){
         
         $this->distinct = $type;
         
@@ -144,7 +141,7 @@ Class MySqlModel extends BaseModel
         
     }
     
-    public function fields($fields = array()){
+    protected function fields($fields = array()){
         
         $this->fields = $fields;
         
@@ -152,7 +149,7 @@ Class MySqlModel extends BaseModel
         
     }
     
-    public function insert($fields = array()){
+    protected function insert($fields = array()){
         
         $this->operation_type = 'insert';
         $this->fields = $fields;
@@ -161,7 +158,7 @@ Class MySqlModel extends BaseModel
         
     }
     
-    public function update($data = array(), $where = array()){
+    protected function update($data = array(), $where = array()){
         
         $this->operation_type = 'update';
         $this->fields = $data;
@@ -171,7 +168,7 @@ Class MySqlModel extends BaseModel
         
     }
     
-    public function delete($where = array()){
+    protected function delete($where = array()){
         
         $this->operation_type = 'delete';
         $this->where = $where;
@@ -180,7 +177,7 @@ Class MySqlModel extends BaseModel
         
     }
     
-    public function rawQuery($query){
+    protected function rawQuery($query){
         
         $this->query = $where;
         
@@ -189,79 +186,40 @@ Class MySqlModel extends BaseModel
     }
     
     /**
-     * @param string $tableName
      * @param array $data
      *
      * @return array|bool
      * @throws MysqlException
      */
-    public function replace($tableName, $data){
+    protected function replace($data){
         
-        return $this->db->replace($tableName, $data);
+        return $this->conn->replace($this->table, $data);
         
     }
     
     /**
-     * @param string $tableName
      * @param array $data
      *
      * @return array|bool
      * @throws MysqlException
      */
-    public function replaceMany($tableName, $data){
+    protected function replaceMany($data){
         
         
-        return $this->db->replaceMany($tableName, $data);
+        return $this->conn->replaceMany($this->table, $data);
         
     }
     
     /**
-     * @param string $tableName
      * @param array $data
      * @param bool $insertIgnore
      *
      * @return array|bool
      * @throws MysqlException
      */
-    public function insertMany($tableName, $data, $insertIgnore = false){
+    protected function insertMany($data, $insertIgnore = false){
         
-        return $this->db->insertMany($tableName, $data, $insertIgnore);
-        
-    }
-    
-    /**
-     * @param string $query
-     * @param array $conds
-     *
-     * @return MysqlQueryIterator|null
-     */
-    public function fetchRowManyCursor($query, $where){
-        
-        return $this->db->fetchRowManyCursor($query, $where);
-        
-    }
-    
-    /**
-     * @param string $query
-     * @param array $conds
-     *
-     * @return array|null
-     */
-    public function fetchRowMany($query, $where){
-        
-        return $this->db->fetchRowMany($query, $where);
-        
-    }
-    
-    /**
-     * @param string $query
-     * @param array $conds
-     *
-     * @return array|null
-     */
-    public function fetchRow($query, $where){
-        
-        return $this->db->fetchRow($query, $where);
+        return $this->conn->insertMany($this->table, $data, $insertIgnore);
         
     }
     
@@ -271,9 +229,9 @@ Class MySqlModel extends BaseModel
      *
      * @return MysqlQueryIterator|null
      */
-    public function fetchColumnManyCursor($query, $where){
+    protected function fetchRowManyCursor($query, $where){
         
-        return $this->db->fetchColumnManyCursor($query, $where);
+        return $this->conn->fetchRowManyCursor($query, $where);
         
     }
     
@@ -283,9 +241,45 @@ Class MySqlModel extends BaseModel
      *
      * @return array|null
      */
-    public function fetchColumnMany($query, $where){
+    protected function fetchRowMany($query, $where){
         
-        return $this->db->fetchColumnMany($query, $where);
+        return $this->conn->fetchRowMany($query, $where);
+        
+    }
+    
+    /**
+     * @param string $query
+     * @param array $conds
+     *
+     * @return array|null
+     */
+    protected function fetchRow($query, $where){
+        
+        return $this->conn->fetchRow($query, $where);
+        
+    }
+    
+    /**
+     * @param string $query
+     * @param array $conds
+     *
+     * @return MysqlQueryIterator|null
+     */
+    protected function fetchColumnManyCursor($query, $where){
+        
+        return $this->conn->fetchColumnManyCursor($query, $where);
+        
+    }
+    
+    /**
+     * @param string $query
+     * @param array $conds
+     *
+     * @return array|null
+     */
+    protected function fetchColumnMany($query, $where){
+        
+        return $this->conn->fetchColumnMany($query, $where);
         
     }
     
@@ -295,9 +289,9 @@ Class MySqlModel extends BaseModel
      *
      * @return null|string
      */
-    public function fetchColumn($query, $where){
+    protected function fetchColumn($query, $where){
         
-        return $this->db->fetchColumn($query, $where);
+        return $this->conn->fetchColumn($query, $where);
         
     }
     
@@ -307,31 +301,29 @@ Class MySqlModel extends BaseModel
      * @return bool
      * @throws MysqlException
      */
-    public function executeSql($query){
+    protected function executeSql($query){
         
-        return $this->db->executeSql($query);
+        return $this->conn->executeSqlQuery($query);
         
     }
     
     /**
      * @return bool|int
      */
-    public function getLastQueryRowCount(){
+    protected function getLastQueryRowCount(){
         
-        return $this->db->getRowCount();
+        return $this->conn->getRowCount();
         
     }
     
-    public function exec($table){
-        
-        //echo $query .$this->operation_type; 
-        
-        if($this->operation_type == 'get'){
+    protected function makeRequest(){ 
+       
+        if($this->operation_type != 'insert' || $this->operation_type != 'update' || $this->operation_type != 'delete'){
             
             $select_query = 'Select ' . ((empty($this->distinct))? '':' DISTINCT ' . $this->distinct);
             
             //Select Query
-            $select = implode(', ', $this->select);
+            $select = implode(', ', $this->fields);
             
             if(count($this->where) > 0){
                 $where = ' where ';
@@ -354,21 +346,43 @@ Class MySqlModel extends BaseModel
             // Order By Query
             $orderBy = (empty($this->orderBy))?' ':' ORDER BY ' . $this->orderBy;
             
-            $query = $select_query . $distinct . $select . ' from '. $table . $where . $orderBy . $limit;
+            $this->query = $select_query . $distinct . $select . ' from '. $this->table . $where . $orderBy . $limit;
             
-            return $this->db->fetchRowMany($query);
+        }
+    }
+    
+    protected function call(){
+        
+        if($this->operation_type == 'insert'){
             
-        } else if($this->operation_type == 'insert'){
-            
-            return $this->db->insert($table, $this->fields);
+            return $this->conn->insert($this->table, $this->fields);
             
         } else if($this->operation_type == 'update'){
             
-            return $this->db->update($table, $this->where, $this->fields);
+            return $this->conn->update($this->table, $this->where, $this->fields);
             
         } else if($this->operation_type == 'delete'){
             
-            return $this->db->delete($table, $this->where);
+            return $this->conn->delete($this->table, $this->where);
+            
+        } else {
+            
+            if($this->operation_type == 'getSingle'){
+                
+                return $this->conn->fetchRow($this->query);
+                
+            } else if($this->operation_type == 'getCount'){
+                
+                $data = $this->conn->fetchRowMany($this->query);
+                
+                return count($data);
+                
+            } else {
+                
+                return $this->conn->fetchRowMany($this->query);
+                
+            }
+            
             
         }
     }

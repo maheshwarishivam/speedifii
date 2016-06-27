@@ -92,7 +92,7 @@ class MySql
     /**
      * @return MySql
      */
-    public function close()
+    protected function close()
     {
         $this->dbh = null;
 
@@ -497,6 +497,38 @@ class MySql
 
         throw new MysqlException($errorInfo);
     }
+    
+    /**
+     * @param string $query
+     *
+     * @return bool
+     * @throws MysqlException
+     */
+    public function executeSqlQuery($query)
+    {
+        $dbh = $this->getDbh();
+
+        $stmt = $dbh->prepare($query);
+        $response  = $stmt->execute();
+        $result = $stmt->fetchAll();
+        
+        if (count($result) > 0){
+            
+            return $result;
+            
+        } else if($response !== false) {
+            
+            return true;
+            
+        } else {
+            $error = [
+                'query'     => $query,
+                'errorInfo' => $this->prepareErrorInfo($dbh->errorInfo()),
+            ];
+
+            return json_encode($error);
+        }
+    }
 
     /**
      * @param string $dbName
@@ -649,7 +681,7 @@ class MySql
         }
 
         $response = $this->insertMany($tableName, [$data], $insertIgnore);
-
+    
         if ($response === false)
         {
             return false;
@@ -690,7 +722,7 @@ class MySql
         $query = str_replace(':PARAM_NAMES', join(', ', $placeholder['param_names']), $query);
 
         // ----------------------------------
-        print_r($query);        print_r($data); die;
+  
         $response = $this->prepareInsertReplace($query, $data);
 
         if (empty($response))

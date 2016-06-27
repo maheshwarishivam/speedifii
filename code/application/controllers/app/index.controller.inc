@@ -84,10 +84,17 @@ class IndexController extends BaseController
     {
         $this->indexCurl = new IndexCurlModel();
         
+        $params =array(
+            'page' => 1,
+            'limit' => 100,
+            'version' => 1
+        );
+        
         $where = array(
-            'url' => $this->apiUrl('company/users?page=1&limit=100'),
+            'url' => $this->apiUrl('company/users'),
             'method' => 'GET',
-            'headers' => $this->headers
+            'headers' => $this->headers,
+            'params' => $params
         );
         
         $result = $this->indexCurl->userList($where);

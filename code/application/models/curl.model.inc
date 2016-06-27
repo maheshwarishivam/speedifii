@@ -7,8 +7,9 @@ use speedifii\libraries\curl\Curl;
 
 Class CurlModel extends BaseModel
 {
+    protected $params = null;
     
-    public $curl = null;
+    protected $url = null;
     
     /**
      * CurlModel constructor.
@@ -21,95 +22,95 @@ Class CurlModel extends BaseModel
     }
     
     
-    public function getConnection(){
-        $this->curl = new Curl();
+    protected function getConnection(){
+        $this->conn = new Curl();
     }
     
     
-    public function closeConnection(){
+    protected function closeConnection(){
         
     }
     
-    public function setParams($data){
-        
+    protected function setParams($data){  
+        $this->params = $data;
     }
             
-    public function getSingle($select = ' * '){
+    protected function getSingle(){
         
     }
     
-    public function getMany($select = ' * '){
+    protected function getMany(){
         
     }
     
-    public function getCount($select = ' * '){
+    protected function getCount(){
         
     }
     
-    public function where($condition = array()){
+    protected function where($condition = array()){
         
     }
     
-    public function orderBy($type = array()){
+    protected function orderBy($type = array()){
         
     }
     
-    public function limit($data){
+    protected function limit($data){
         
     }
     
-    public function distinct($type = false){
+    protected function distinct($type = false){
         
     }
     
-    public function fields($fields = array()){
+    protected function fields($fields = array()){
         
     }
     
-    public function insert($fields = array()){
+    protected function insert($fields = array()){
         
     }
     
-    public function update($data = array(), $where = array()){
+    protected function update($data = array(), $where = array()){
         
     }
     
-    public function delete($where = array()){
+    protected function delete($where = array()){
         
     }
     
-    public function rawQuery($query){
+    protected function rawQuery($query){
         
     }
     
-    public function replace($tableName, $data){
+    protected function replace($data){
         
     }
     
-    public function replaceMany($tableName, $data){
+    protected function replaceMany($data){
         
     }
     
-    public function insertMany($tableName, $data, $insertIgnore){
+    protected function insertMany($data, $insertIgnore){
         
     }
     
-    public function fetchRowManyCursor($query, $where){
-        
-        
-    }
-    
-    public function fetchRowMany($query, $where){
+    protected function fetchRowManyCursor($query, $where){
         
         
     }
     
-    public function fetchRow($query, $where){
+    protected function fetchRowMany($query, $where){
         
         
     }
     
-    public function fetchColumnManyCursor($query, $where){
+    protected function fetchRow($query, $where){
+        
+        
+    }
+    
+    protected function fetchColumnManyCursor($query, $where){
         
         
     }
@@ -120,7 +121,7 @@ Class CurlModel extends BaseModel
      *
      * @return array|null
      */
-    public function fetchColumnMany($query, $where){
+    protected function fetchColumnMany($query, $where){
         
         
     }
@@ -131,7 +132,7 @@ Class CurlModel extends BaseModel
      *
      * @return null|string
      */
-    public function fetchColumn($query, $where){
+    protected function fetchColumn($query, $where){
         
     }
     
@@ -141,7 +142,7 @@ Class CurlModel extends BaseModel
      * @return bool
      * @throws MysqlException
      */
-    public function executeSql($query){
+    protected function executeSql($query){
         
         
     }
@@ -149,13 +150,59 @@ Class CurlModel extends BaseModel
     /**
      * @return bool|int
      */
-    public function getLastQueryRowCount(){
+    protected function getLastQueryRowCount(){
         
         
     }
     
-    public function exec($table){
+    protected function setUrl($data){
+        $this->url = $data;
+    }
+    
+    protected function setMethod($data){
+        $this->conn->setMethod($data);
+    }
+    
+    protected function setHeaders($data){
+        $this->conn->setHeaders($data);
+    }
+    
+    protected function setReqType($data){
+        $this->conn->setReqType($data);
+    }
+    
+    protected function setRawBody($data){
+        $this->conn->setRawBody($data);
+    }
+    
+    protected function toArray(){
+        return $this->conn->toArray();
+    }
+    
+    protected function toJSON(){
+        return $this->conn->toJSON();
+    }
+
+    protected function makeRequest(){
         
+        $url = '';
+        
+        if(count($this->params) > 0){
+            
+            $url = '?'.implode('&', array_map(
+                function ($v, $k) { return sprintf("%s=%s", $k, $v); },
+                $this->params,
+                array_keys($this->params)
+            ));
+            
+        }
+        
+        $url = $this->url.$url;
+        $this->conn->setUrl($url);
+    }
+
+    protected function call(){
+        $this->conn->call();
     }
     
 }

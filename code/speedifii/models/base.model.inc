@@ -9,7 +9,7 @@ namespace speedifii\model;
  */
  abstract class BaseModel
 {
-    
+    protected $conn = null;
     /**
      * BaseModel constructor.
      */
@@ -18,44 +18,35 @@ namespace speedifii\model;
         
     }
     
-    public abstract function getConnection();
+    abstract protected function getConnection();
     
-    public abstract function closeConnection();
+    abstract protected function closeConnection();
     
-    public abstract function setParams($select);
+    abstract protected function setParams($data);
     
-    public abstract function getSingle($select);
+    abstract protected function getSingle();
     
-    public abstract function getMany($select);
+    abstract protected function getMany();
             
-    public abstract function getCount($table);
+    abstract protected function getCount();
     
-    public abstract function where($condition);
+    abstract protected function where($condition);
     
-    public abstract function orderBy($type);
+    abstract protected function orderBy($type);
     
-    public abstract function limit($data);
+    abstract protected function limit($data);
     
-    public abstract function distinct($type);
+    abstract protected function distinct($type);
     
-    public abstract function fields($fields);    
+    abstract protected function fields($fields);    
     
-    public abstract function insert($data);
+    abstract protected function insert($data);
 
-    public abstract function update($data, $where);
+    abstract protected function update($data, $where);
     
-    public abstract function delete($where);
+    abstract protected function delete($where);
     
-    public abstract function rawQuery($query);
-    
-    /**
-     * @param string $tableName
-     * @param array $data
-     *
-     * @return array|bool
-     * @throws MysqlException
-     */
-    public abstract function replace($tableName, $data);
+    abstract protected function rawQuery($query);
     
     /**
      * @param string $tableName
@@ -64,7 +55,16 @@ namespace speedifii\model;
      * @return array|bool
      * @throws MysqlException
      */
-    public abstract function replaceMany($tableName, $data);
+    abstract protected function replace($data);
+    
+    /**
+     * @param string $tableName
+     * @param array $data
+     *
+     * @return array|bool
+     * @throws MysqlException
+     */
+    abstract protected function replaceMany($data);
     
     /**
      * @param string $tableName
@@ -74,7 +74,7 @@ namespace speedifii\model;
      * @return array|bool
      * @throws MysqlException
      */
-    public abstract function insertMany($tableName, $data, $insertIgnore);//
+    abstract protected function insertMany($data, $insertIgnore);//
     
     /**
      * @param string $query
@@ -82,7 +82,7 @@ namespace speedifii\model;
      *
      * @return MysqlQueryIterator|null
      */
-    public abstract function fetchRowManyCursor($query, $where);
+    abstract protected function fetchRowManyCursor($query, $where);
     
     /**
      * @param string $query
@@ -90,7 +90,7 @@ namespace speedifii\model;
      *
      * @return array|null
      */
-    public abstract function fetchRowMany($query, $where);
+    abstract protected function fetchRowMany($query, $where);
     
     /**
      * @param string $query
@@ -98,7 +98,7 @@ namespace speedifii\model;
      *
      * @return array|null
      */
-    public abstract function fetchRow($query, $where);
+    abstract protected function fetchRow($query, $where);
     
     /**
      * @param string $query
@@ -106,7 +106,7 @@ namespace speedifii\model;
      *
      * @return MysqlQueryIterator|null
      */
-    public abstract function fetchColumnManyCursor($query, $where);
+    abstract protected function fetchColumnManyCursor($query, $where);
     
     /**
      * @param string $query
@@ -114,7 +114,7 @@ namespace speedifii\model;
      *
      * @return array|null
      */
-    public abstract function fetchColumnMany($query, $where);
+    abstract protected function fetchColumnMany($query, $where);
 
     /**
      * @param string $query
@@ -122,7 +122,7 @@ namespace speedifii\model;
      *
      * @return null|string
      */
-    public abstract function fetchColumn($query, $where);
+    abstract protected function fetchColumn($query, $where);
     
     /**
      * @param string $query
@@ -130,15 +130,20 @@ namespace speedifii\model;
      * @return bool
      * @throws MysqlException
      */
-    public abstract function executeSql($query);
+    abstract protected function executeSql($query);
     
     /**
      * @return bool|int
      */
-    public abstract function getLastQueryRowCount();
+    abstract protected function getLastQueryRowCount();
     
-    public abstract function exec($table);
-
+    protected final function exec(){
+        
+        $this->makeRequest();
+        return $this->call();
+        
+    }
+    
 }
 
 

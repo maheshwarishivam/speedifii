@@ -136,7 +136,7 @@ class Curl {
      * Set Curl response details in CurlResponse Object.
      */
     private final function getCall(){  
-		
+
         $headers = $this->curlReq->getHeaders();
         $url     = $this->curlReq->getUrl(); 
         $cookies = $this->curlReq->getCookies();

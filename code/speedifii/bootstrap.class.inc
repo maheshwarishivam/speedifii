@@ -278,7 +278,7 @@ class Bootstrap
 
         //Autoload current Controller
         require CURR_CONTROLLER_PATH . CONTROLLER . '.controller.inc';
-
+     
         // Instantiate the controller class and call its action method
         $controller_name = CONTROLLER . 'Controller';
 
