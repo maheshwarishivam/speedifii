@@ -5,6 +5,10 @@ namespace application\model;
 use speedifii\model\BaseModel;
 use speedifii\libraries\mysql\MySql;
 
+/**
+ * Class MySqlModel
+ * @package application\models\
+ */
 Class MySqlModel extends BaseModel
 {
     /**
@@ -26,6 +30,11 @@ Class MySqlModel extends BaseModel
      * @var MySql Object
      */
     private $orderBy = '';
+    
+    /**
+     * @var MySql Object
+     */
+    private $params = '';
     
     /**
      * @var MySql Object
@@ -53,7 +62,9 @@ Class MySqlModel extends BaseModel
      */
     protected $conn = null;
 
-
+    /**
+     * MySqlModel constructor.
+     */
     public function __construct() 
     {  
         parent::__construct();
@@ -61,6 +72,9 @@ Class MySqlModel extends BaseModel
         
     }
     
+    /**
+     * @MySql Get Databse Connection Function
+     */
     protected function getConnection(){
         $this->host         = $GLOBALS['config']['database']['host'];
         $this->userName     = $GLOBALS['config']['database']['username'];
@@ -77,14 +91,36 @@ Class MySqlModel extends BaseModel
         $this->conn = new MySql($this->host, $this->userName, $this->password, $this->databaseName, $this->fetchMode, $this->charset, $option);
     }
     
+    /**
+     * @MySql Close Databse Connection Function
+     * 
+     * @return bool
+     */
     protected function closeConnection(){
         $this->conn->close();
+        return true;
     }
     
+    /**
+     * @MySql setParams
+     * 
+     * @param Array $data
+     * 
+     * @return Object
+     */
     protected function setParams($data){
+        
+        $this->params = $data;
+        
+        return $this;
         
     }
             
+    /**
+     * @MySql Return Single Records Function
+     * 
+     * @return Object
+     */
     protected function getSingle(){
         
         $this->operation_type = 'getSingle';
@@ -93,6 +129,11 @@ Class MySqlModel extends BaseModel
         
     }
     
+    /**
+     * @MySql Return Multiple Records Function
+     * 
+     * @return Object
+     */
     protected function getMany(){
         
         $this->operation_type = 'getMany';
@@ -101,6 +142,11 @@ Class MySqlModel extends BaseModel
         
     }
     
+    /**
+     * @MySql Return Int Records Function
+     * 
+     * @return Object
+     */
     protected function getCount(){
         
         $this->operation_type = 'getCount';
@@ -109,6 +155,13 @@ Class MySqlModel extends BaseModel
         
     }
     
+    /**
+     * @MySql Return Int Records Function
+     * 
+     * @param Array $condition
+     * 
+     * @return Object
+     */
     protected function where($condition = array()){
         
         $this->where = $condition;
@@ -117,6 +170,11 @@ Class MySqlModel extends BaseModel
         
     }
     
+    /**
+     * @param String $type
+     * 
+     * @return Object
+     */
     protected function orderBy($type = ''){
         
         $this->orderBy = $type;
@@ -125,6 +183,11 @@ Class MySqlModel extends BaseModel
         
     }
     
+    /**
+     * @param String $data
+     * 
+     * @return Object
+     */
     protected function limit($data){
         
         $this->limit = $data;
@@ -133,6 +196,11 @@ Class MySqlModel extends BaseModel
         
     }
     
+    /**
+     * @param String $type
+     * 
+     * @return Object
+     */
     protected function distinct($type = ''){
         
         $this->distinct = $type;
@@ -141,6 +209,11 @@ Class MySqlModel extends BaseModel
         
     }
     
+    /**
+     * @param Array $fields
+     * 
+     * @return Object
+     */
     protected function fields($fields = array()){
         
         $this->fields = $fields;
@@ -149,6 +222,11 @@ Class MySqlModel extends BaseModel
         
     }
     
+    /**
+     * @param Array $fields
+     * 
+     * @return Object
+     */
     protected function insert($fields = array()){
         
         $this->operation_type = 'insert';
@@ -158,6 +236,11 @@ Class MySqlModel extends BaseModel
         
     }
     
+    /**
+     * @param Array $data|$where
+     * 
+     * @return Object
+     */
     protected function update($data = array(), $where = array()){
         
         $this->operation_type = 'update';
@@ -168,6 +251,11 @@ Class MySqlModel extends BaseModel
         
     }
     
+    /**
+     * @param Array $where
+     * 
+     * @return Object
+     */
     protected function delete($where = array()){
         
         $this->operation_type = 'delete';
@@ -177,6 +265,11 @@ Class MySqlModel extends BaseModel
         
     }
     
+    /**
+     * @param String $query
+     * 
+     * @return Object
+     */
     protected function rawQuery($query){
         
         $this->query = $where;
@@ -316,6 +409,9 @@ Class MySqlModel extends BaseModel
         
     }
     
+    /**
+     * @Make MySql Query For Fetching Records
+     */
     protected function makeRequest(){ 
        
         if($this->operation_type != 'insert' || $this->operation_type != 'update' || $this->operation_type != 'delete'){
@@ -351,6 +447,11 @@ Class MySqlModel extends BaseModel
         }
     }
     
+    /**
+     * @Execute MySql Query
+     * 
+     * @return Array|bool
+     */
     protected function call(){
         
         if($this->operation_type == 'insert'){
@@ -382,8 +483,6 @@ Class MySqlModel extends BaseModel
                 return $this->conn->fetchRowMany($this->query);
                 
             }
-            
-            
         }
     }
 }

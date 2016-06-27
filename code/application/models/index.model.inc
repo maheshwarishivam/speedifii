@@ -1,13 +1,17 @@
 <?php
-
-//namespace application\model;
-
 use application\model\MySqlModel;
 
+/**
+ * Class IndexModel
+ * @package application\models\
+ */
 class IndexModel extends MySqlModel
 {
-    
+    /**
+     * @var MySql Object Variable
+     */
     public $IndexModel = null;
+    
     /**
      * IndexModel constructor.
      */
@@ -17,6 +21,9 @@ class IndexModel extends MySqlModel
         $this->table = 'users';
     }
     
+    /**
+     * @MySql Get user List
+     */
     public function user_list($table){
         
         $this->IndexModel = new IndexModel();
@@ -25,9 +32,9 @@ class IndexModel extends MySqlModel
         //$arr = array('id'=>9);
         //$result = $this->IndexModel->getMany()->where(array('name'=>'praveen'))->orderBy('id ASC')->fields($table)->limit('45')->exec();
         
-        $result = $this->IndexModel->insert(array('name'=>'praveen', 'email'=>'pravvvvvvr'))->exec();
+//        /$result = $this->IndexModel->insert(array('name'=>'praveen', 'email'=>'pravvvvvvr'))->exec();
         //$result = $this->IndexModel->update()->fields(array('name'=>'praveen', 'email'=>'prav v pn'))->where(array('id'=>7))->exec();
-        //$this->IndexModel->delete(array('id'=>11))->exec('users');
+        $result = $this->IndexModel->delete(array('id'=>9))->exec('users');
         
         //$result = $this->IndexModel->insertMany(array('name' => 'p1', 'name' => 'p12', 'name' => 'p123'));
         

@@ -5,10 +5,20 @@ namespace application\model;
 use speedifii\model\BaseModel;
 use speedifii\libraries\curl\Curl;
 
+/**
+ * Class CurlModel
+ * @package application\models\
+ */
 Class CurlModel extends BaseModel
 {
+    /**
+     * @var Curl $Params Variable
+     */
     protected $params = null;
     
+    /**
+     * @var Curl $url Variable
+     */
     protected $url = null;
     
     /**
@@ -21,7 +31,9 @@ Class CurlModel extends BaseModel
         $this->getConnection();
     }
     
-    
+    /**
+     * @Call Library Curl Class File
+     */
     protected function getConnection(){
         $this->conn = new Curl();
     }
@@ -31,6 +43,11 @@ Class CurlModel extends BaseModel
         
     }
     
+    /**
+     * @Set Params Data
+     * 
+     * @param Array $data
+     */
     protected function setParams($data){  
         $this->params = $data;
     }
@@ -155,34 +172,73 @@ Class CurlModel extends BaseModel
         
     }
     
+    /**
+     * @Set Url Data
+     * 
+     * @param String $data
+     */
     protected function setUrl($data){
         $this->url = $data;
     }
     
+    /**
+     * @Set Method Data
+     * 
+     * @param String $data
+     */
     protected function setMethod($data){
         $this->conn->setMethod($data);
     }
     
+    /**
+     * @Set Headers Data
+     * 
+     * @param Array $data
+     */
     protected function setHeaders($data){
         $this->conn->setHeaders($data);
     }
     
+    /**
+     * @Set ReqType Data
+     * 
+     * @param String $data
+     */
     protected function setReqType($data){
         $this->conn->setReqType($data);
     }
     
+    /**
+     * @Set RawBody Data
+     * 
+     * @param String $data
+     */
     protected function setRawBody($data){
         $this->conn->setRawBody($data);
     }
     
+    /**
+     * @Return All Details of Request
+     * 
+     * @return Array 
+     */
     protected function toArray(){
         return $this->conn->toArray();
     }
     
+    /**
+     * @Return All Details of Request
+     * 
+     * @return JSON 
+     */
     protected function toJSON(){
         return $this->conn->toJSON();
     }
 
+    /**
+     * @Set All Params in Url
+     * 
+     */
     protected function makeRequest(){
         
         $url = '';
@@ -201,6 +257,10 @@ Class CurlModel extends BaseModel
         $this->conn->setUrl($url);
     }
 
+    /**
+     * @Call Curl Main Function
+     * 
+     */
     protected function call(){
         $this->conn->call();
     }

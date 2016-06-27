@@ -1,9 +1,11 @@
 <?php
 
-//namespace application\model;
-
 use application\model\CurlModel;
 
+/**
+ * Class IndexController
+ * @package application\controllers\app\
+ */
 class IndexCurlModel extends CurlModel
 {
     
@@ -15,6 +17,9 @@ class IndexCurlModel extends CurlModel
         parent::__construct();
     }
     
+    /**
+     * @Curl Call userList Model Function
+     */
     public function userList($data){
         
         $this->setUrl($data['url']);
@@ -27,7 +32,9 @@ class IndexCurlModel extends CurlModel
         return $this->toArray();
     }
 
-    
+    /**
+     * @Curl Call userDetail Model Function
+     */
     public function userDetail($data){
         
         $this->setUrl($data['url']);
@@ -39,7 +46,9 @@ class IndexCurlModel extends CurlModel
         return $this->toArray();
     }    
 
-    
+    /**
+     * @Curl Call updateUserDetails Model Function
+     */
     public function updateUserDetail($data){
         
         $this->setUrl($data['url']);
@@ -53,7 +62,9 @@ class IndexCurlModel extends CurlModel
         return $this->toArray();
     } 
 
-    
+    /**
+     * @Curl Call userDelete Model Function
+     */
     public function userDelete($data){
         
         $this->setUrl($data['url']);
@@ -65,7 +76,9 @@ class IndexCurlModel extends CurlModel
         return $this->toArray();
     }     
 
-    
+    /**
+     * @Curl Call addUser Model Function
+     */
     public function addUser($data){
         
         $this->setUrl($data['url']);

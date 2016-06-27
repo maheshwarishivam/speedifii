@@ -4,14 +4,24 @@ use speedifii\controllers\BaseController;
 
 /**
  * Class IndexController
+ * @package application\controllers\app\
  */
 class IndexController extends BaseController 
 {
     
+    /**
+     * @var MySql Model Object
+     */
     private $index = null;   
     
+    /**
+     * @var Curl Model Object
+     */
     private $indexCurl = null;
     
+    /**
+     * @var Headers Object
+     */
     private $headers = null;
 
 
@@ -29,12 +39,11 @@ class IndexController extends BaseController
     }
 
     /**
-     * @ Mysql call
+     * @Mysql Call Dummy Function
      */
     public function indexAction()
     {
         $this->index = new IndexModel();
-        // TODO: Implement IndexAction() method.
         
         //$where = array('id' => 6);
         $result = $this->index->user_list('users');
@@ -48,7 +57,7 @@ class IndexController extends BaseController
     }
     
     /**
-     * @ Curl call
+     * @Curl Call Add Function
      */
     public function addAction()
     {
@@ -78,7 +87,7 @@ class IndexController extends BaseController
     }
     
     /**
-     * @ Curl call
+     * @Curl Call List function
      */
     public function listAction()
     {
@@ -106,12 +115,11 @@ class IndexController extends BaseController
     }
     
     /**
-     * @ Curl call
+     * @Curl Call Edit function
      */
     public function editAction($id)
     {
         $this->indexCurl = new IndexCurlModel();
-        // TODO: Implement IndexAction() method.
         
         if($_POST){
             
@@ -152,7 +160,7 @@ class IndexController extends BaseController
     }
     
     /**
-     * @ Curl call
+     * @Curl Delete Call Function
      */
     public function deleteAction($id)
     {

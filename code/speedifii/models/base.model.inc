@@ -9,7 +9,12 @@ namespace speedifii\model;
  */
  abstract class BaseModel
 {
+     
+    /**
+     * @var MySql Connection Object
+     */
     protected $conn = null;
+    
     /**
      * BaseModel constructor.
      */
@@ -18,38 +23,103 @@ namespace speedifii\model;
         
     }
     
+    /** 
+     * @return MySql Object
+     */
     abstract protected function getConnection();
     
+    /** 
+     * @return bool
+     */
     abstract protected function closeConnection();
     
+    /** 
+     * @param Array $data
+     *
+     * @return Array
+     */
     abstract protected function setParams($data);
     
+    /** 
+     * @return Array
+     */
     abstract protected function getSingle();
     
+    /** 
+     * @return Array
+     */
     abstract protected function getMany();
             
+    /** 
+     * @return bool|int
+     */
     abstract protected function getCount();
     
+    /** 
+     * @param Array $condition
+     *
+     * @return bool|int
+     */
     abstract protected function where($condition);
     
+    /** 
+     * @param String $type
+     *
+     * @return bool|int
+     */
     abstract protected function orderBy($type);
     
+    /** 
+     * @param String $data
+     *
+     * @return bool|int
+     */
     abstract protected function limit($data);
     
+    /** 
+     * @param String $type
+     *
+     * @return bool|int
+     */
     abstract protected function distinct($type);
     
+    /** 
+     * @param array $fields
+     *
+     * @return bool|int
+     */
     abstract protected function fields($fields);    
     
+    /** 
+     * @param array $data
+     *
+     * @return bool|int
+     */
     abstract protected function insert($data);
 
+    /** 
+     * @param array $data|$where
+     *
+     * @return bool|int
+     */
     abstract protected function update($data, $where);
     
+    /** 
+     * @param array $where
+     *
+     * @return bool|int
+     */
     abstract protected function delete($where);
     
+    /**
+     * @param array $data
+     *
+     * @return array|bool
+     * @throws MysqlException
+     */
     abstract protected function rawQuery($query);
     
     /**
-     * @param string $tableName
      * @param array $data
      *
      * @return array|bool
@@ -58,7 +128,6 @@ namespace speedifii\model;
     abstract protected function replace($data);
     
     /**
-     * @param string $tableName
      * @param array $data
      *
      * @return array|bool
@@ -67,7 +136,6 @@ namespace speedifii\model;
     abstract protected function replaceMany($data);
     
     /**
-     * @param string $tableName
      * @param array $data
      * @param bool $insertIgnore
      *
@@ -137,6 +205,9 @@ namespace speedifii\model;
      */
     abstract protected function getLastQueryRowCount();
     
+    /**
+     * @return Array|bool|int
+     */
     protected final function exec(){
         
         $this->makeRequest();
