@@ -25,7 +25,7 @@ class IndexCurlModel extends CurlModel
         $this->setUrl($data['url']);
         $this->setMethod($data['method']);
         $this->setHeaders($data['headers']);
-        $this->setParams($data['params']);
+        $this->setBody($data['body']);
         
         $this->exec();
         

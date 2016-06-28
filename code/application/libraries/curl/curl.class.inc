@@ -73,6 +73,13 @@ class Curl {
     }
     
     /**
+     * @var CurlRequest String
+     */
+    public function setBody($body){
+        $this->curlReq->setBody($body);
+    }
+    
+    /**
      * @return CurlResponse Array
      */
     public function toArray(){
@@ -235,6 +242,7 @@ class Curl {
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_POST, 1 );
         curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT_MS, 10000);
         curl_setopt($ch, CURLOPT_TIMEOUT_MS, 10000);
         $http_result = curl_exec($ch);

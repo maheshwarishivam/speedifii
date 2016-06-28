@@ -133,7 +133,7 @@ class CurlRequest {
      * @param Set Body
      */
     public function setBody($body)
-    {
+    { 
         $this->body = $body;
     }
     

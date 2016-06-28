@@ -89,6 +89,32 @@ class IndexController extends BaseController
     /**
      * @Curl Call List function
      */
+    public function list2Action()
+    {
+        $this->indexCurl = new IndexCurlModel();
+        
+        $params =array(
+            'page' => 1,
+            'limit' => 100,
+            'version' => 1
+        );
+        
+        $headers1 = array('content-type: multipart/form-data');
+        
+        $where = array(
+            'url' => 'http://www.zopnow.com/pincode.json',
+            'method' => 'POST',
+            'headers' => $headers1,
+            'body' => array('pincode' => '110058')
+        );
+        
+        $result = $this->indexCurl->userList($where);
+        echo "<pre>"; print_r($result); die;
+    }
+    
+    /**
+     * @Curl Call List function
+     */
     public function listAction()
     {
         $this->indexCurl = new IndexCurlModel();
@@ -99,15 +125,17 @@ class IndexController extends BaseController
             'version' => 1
         );
         
+        $headers1 = array('APIKey:62f7b668181f54c08191cf62a2373ff7', 'AuthToken: 396dbaa0de83aeb3971c6b6cdca35a0f');
+        
         $where = array(
-            'url' => $this->apiUrl('company/users'),
-            'method' => 'GET',
-            'headers' => $this->headers,
-            'params' => $params
+            'url' => 'http://api.raccoon.dev.canbrand.in/upload/image',
+            'method' => 'POST',
+            'headers' => $headers1,
+            'body' => array('type' => 'course')
         );
         
         $result = $this->indexCurl->userList($where);
-        
+        echo "<pre>"; print_r($result); die;
         $this->res->setBody(array('title' => 'Welcome!', 'message' => 'Hello Curl User List', 'list' => $result));
         $this->res->setHeader("AuthToken", 'sdsdhkjsdkjshd');
         $this->res->setCookie("WBSessionTxT", "kjshdkshdkjsjd", $GLOBALS['config']['session']['timeout']);

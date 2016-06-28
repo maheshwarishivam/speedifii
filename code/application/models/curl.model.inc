@@ -52,83 +52,136 @@ Class CurlModel extends BaseModel
         $this->params = $data;
     }
             
+    /**
+     * @abstract Function Define
+     */
     protected function getSingle(){
         
     }
     
+    /**
+     * @abstract Function Define
+     */
     protected function getMany(){
         
     }
     
+    /**
+     * @abstract Function Define
+     */
     protected function getCount(){
         
     }
     
+    /**
+     * @abstract Function Define
+     */
     protected function where($condition = array()){
         
     }
     
+    /**
+     * @abstract Function Define
+     */
     protected function orderBy($type = array()){
         
     }
     
+    /**
+     * @abstract Function Define
+     */
     protected function limit($data){
         
     }
     
+    /**
+     * @abstract Function Define
+     */
     protected function distinct($type = false){
         
     }
     
+    /**
+     * @abstract Function Define
+     */
     protected function fields($fields = array()){
         
     }
     
+    /**
+     * @abstract Function Define
+     */
     protected function insert($fields = array()){
         
     }
     
+    /**
+     * @abstract Function Define
+     */
     protected function update($data = array(), $where = array()){
         
     }
     
+    /**
+     * @abstract Function Define
+     */
     protected function delete($where = array()){
         
     }
     
+    /**
+     * @abstract Function Define
+     */
     protected function rawQuery($query){
         
     }
     
+    /**
+     * @abstract Function Define
+     */
     protected function replace($data){
         
     }
     
+    /**
+     * @abstract Function Define
+     */
     protected function replaceMany($data){
         
     }
     
+    /**
+     * @abstract Function Define
+     */
     protected function insertMany($data, $insertIgnore){
         
     }
     
+    /**
+     * @abstract Function Define
+     */
     protected function fetchRowManyCursor($query, $where){
         
+    }
+    
+    /**
+     * @abstract Function Define
+     */
+    protected function fetchRowMany($query, $where){ 
         
     }
     
-    protected function fetchRowMany($query, $where){
-        
-        
-    }
-    
-    protected function fetchRow($query, $where){
-        
+    /**
+     * @abstract Function Define
+     */
+    protected function fetchRow($query, $where){ 
         
     }
     
-    protected function fetchColumnManyCursor($query, $where){
-        
+    /**
+     * @abstract Function Define
+     */
+    protected function fetchColumnManyCursor($query, $where){ 
         
     }
     
@@ -197,6 +250,15 @@ Class CurlModel extends BaseModel
      */
     protected function setHeaders($data){
         $this->conn->setHeaders($data);
+    }
+    
+    /**
+     * @Set Headers Data
+     * 
+     * @param Array $data
+     */
+    protected function setBody($data){
+        $this->conn->setBody($data);
     }
     
     /**
