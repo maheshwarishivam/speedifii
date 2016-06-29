@@ -121,7 +121,6 @@ class Logger
      */
     public function writeLogs()
     {
-        $this->isLogProcessed = true;
         try {
             $this->logWriter = new LogWriter($GLOBALS['config']['log']['directory'], $GLOBALS['config']['log']['level'], array(
                 'prefix' => $GLOBALS['config']['log']['logFilePrefix']
@@ -156,7 +155,9 @@ class Logger
             }
             //Empty the logs
             $this->logsToBeWritten = array();
+            $this->isLogProcessed = true;
         } catch (\Exception $ex) {
+            //In case of exception, write to server logs
             trigger_error('Unable to write logs: ' . json_encode($this->logsToBeWritten),E_USER_ERROR);
         }
     }

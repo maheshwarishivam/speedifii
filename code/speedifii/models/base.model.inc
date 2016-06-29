@@ -11,7 +11,7 @@ namespace speedifii\model;
 {
      
     /**
-     * @var MySql Connection Object
+     * @var Connection Object
      */
     protected $conn = null;
     
@@ -209,12 +209,9 @@ namespace speedifii\model;
      * @return Array|bool|int
      */
     protected final function exec(){
-        
         $this->makeRequest();
         return $this->call();
-        
     }
-    
 }
 
 

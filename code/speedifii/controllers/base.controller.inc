@@ -213,7 +213,7 @@ abstract class BaseController
         if (!headers_sent($filename, $linenum)) {
 
             if ($this->res->getStatus() == 301 || $this->res->getStatus() == 302) {
-                 $rawBody = $this->res->getRawBody();
+                $rawBody = $this->res->getRawBody();
 
                 //Handle redirects
                 header('Location: ' . $this->appUrl($rawBody) , TRUE, $this->res->getStatus());
@@ -284,10 +284,8 @@ abstract class BaseController
         }, $path);
     }
 
-    protected final function appUrl($data = '/'){
-
-        return $GLOBALS['config']['application']['app_url'].trim($data, '/');
-
+    protected final function appUrl($data = '/') {
+        return (substr($data,0,4)!='http')?$GLOBALS['config']['application']['app_url'] . trim($data,'/') . '/': $data;
     }
 
 }

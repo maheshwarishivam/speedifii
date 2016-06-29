@@ -58,9 +58,9 @@ function speediFiiShutdownFunction()
     if (isset($err) && isset($handledErrorTypes[$err['type']])) {
         if (!headers_sent()) {
             http_response_code(500);
+            ob_end_flush();
         }
     }
-
 
     //Write Logs to file
     \speedifii\libraries\logger\Logger::getLogger()->writeLogs();

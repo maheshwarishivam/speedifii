@@ -25,7 +25,6 @@ class Bootstrap
      */
     public static function run()
     {
-
         self::init();
 
         self::autoload();
