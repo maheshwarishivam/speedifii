@@ -62,8 +62,8 @@ function speediFiiShutdownFunction()
     }
 
 
-    //TODO: Write Logs to file (if not already written
-
+    //Write Logs to file
+    \speedifii\libraries\logger\Logger::getLogger()->writeLogs();
 }
 
 register_shutdown_function('speediFiiShutdownFunction');

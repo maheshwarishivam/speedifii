@@ -32,7 +32,7 @@ abstract class BaseController
     /**
      * BaseController constructor.
      */
-    protected function __construct()
+    public function __construct()
     {
         //Create Request and Response Objects
         $this->req = new Request();

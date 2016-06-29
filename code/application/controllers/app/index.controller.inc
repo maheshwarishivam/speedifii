@@ -1,6 +1,7 @@
 <?php
 
 use speedifii\controllers\BaseController;
+use \speedifii\libraries\logger\Logger;
 
 /**
  * Class IndexController

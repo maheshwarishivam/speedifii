@@ -106,6 +106,7 @@ class Logger
      */
     private function log($logLevel, $message, $context)
     {
+        $this->isLogProcessed = false;
         $this->logsToBeWritten[] = array(
             'level' => $logLevel,
             'message' => $message,
@@ -155,12 +156,8 @@ class Logger
             }
             //Empty the logs
             $this->logsToBeWritten = array();
-        } catch (\RuntimeException $e) {
-            //TODO: Log to nginx error log
-            var_dump($e);
         } catch (\Exception $ex) {
-            //TODO: Log to nginx error log
-            var_dump($ex);
+            trigger_error('Unable to write logs: ' . json_encode($this->logsToBeWritten),E_USER_ERROR);
         }
     }
 

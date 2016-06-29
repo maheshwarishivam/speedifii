@@ -453,5 +453,5 @@ vsim.dbg
 ### Project Specific
 # ignore config files
 code/application/config/
-code/logs
-
+code/logs/
+logs/
