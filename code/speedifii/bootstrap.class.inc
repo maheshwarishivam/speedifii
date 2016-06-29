@@ -224,7 +224,7 @@ class Bootstrap
         $routes = file_get_contents(CONFIG_PATH . 'route.config.inc', true);
 
         $start = strpos($routes, '{');
-        $route_body = json_decode(substr($routes, $start));
+        $route_body = json_decode(trim(substr($routes, $start)));
 
         foreach ($route_body as $key => $value) {
 
