@@ -29,6 +29,16 @@ class Response
     private $status;
 
     /**
+     * @var String
+     */
+    private $rawType;
+    
+    /**
+     * @var String
+     */
+    private $rawBody;
+    
+    /**
      * Response format to be sent.
      *
      * Should be one of HTML / JSON. Defaults to HTML
@@ -47,6 +57,8 @@ class Response
         $this->body = array();
         $this->cookies = array();
         $this->status = 200;
+        $this->rawType = '';
+        $this->rawBody = '';
         $this->responseFormat = 'HTML';
     }
 
@@ -171,6 +183,38 @@ class Response
     }
 
     /**
+     * @return String
+     */
+    public function getRawType()
+    {
+        return $this->rawType;
+    }
+
+    /**
+     * @return String
+     */
+    public function getRawBody()
+    {
+        return $this->rawBody;
+    }
+
+    /**
+     * @param String $rawType
+     */
+    public function setRawType($rawType)
+    {
+        $this->rawType = $rawType;
+    }
+
+    /**
+     * @param String $rawBody
+     */
+    public function setRawBody($rawBody)
+    {
+        $this->rawBody = $rawBody;
+    }
+
+    /**
      * Retuns the Format in which response should be sent.
      *
      * Can be one of HTML / JSON
@@ -191,6 +235,8 @@ class Response
             'headers' => $this->headers,
             'body' => $this->body,
             'cookies' => $this->cookies,
+            'rawType' => $this->rawType,
+            'rawBody' => $this->rawBody,
             'status' => $this->status,
             'responseFormat' => $this->responseFormat
         );

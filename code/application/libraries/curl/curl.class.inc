@@ -3,7 +3,7 @@
 namespace speedifii\libraries\curl;
 
 /**
- * Class Mysql
+ * Class Curl
  * @package speedifii\libraries\curl
  */
 class Curl {
@@ -37,25 +37,62 @@ class Curl {
         return $this->curlRes;
     }
     
-    
     /**
-     * @param CurlRequest Object
+     * @var CurlRequest String
      */
-    public function setReq($req)
-    {
-        $this->curlReq = $req;
+    public function setUrl($url){
+        $this->curlReq->setUrl($url);
     }
     
+    /**
+     * @var CurlRequest String
+     */
+    public function setMethod($url){
+        $this->curlReq->setMethod($url);
+    }
     
     /**
-     * @param CurlResponse Object
+     * @var CurlRequest Array
      */
-    public function setRes($res)
-    {
-        $this->curlRes = $res;
+    public function setHeaders($url){
+        $this->curlReq->setHeaders($url);
+    }
+    
+    /**
+     * @var CurlRequest String
+     */
+    public function setReqType($url){
+        $this->curlReq->setReqType($url);
+    }
+    
+    /**
+     * @var CurlRequest String
+     */
+    public function setRawBody($url){
+        $this->curlReq->setRawBody($url);
+    }
+    
+    /**
+     * @var CurlRequest String
+     */
+    public function setBody($body){
+        $this->curlReq->setBody($body);
+    }
+    
+    /**
+     * @return CurlResponse Array
+     */
+    public function toArray(){
+        return $this->curlRes->toArray();
+    }
+    
+    /**
+     * @var CurlRequest JSON
+     */
+    public function toJSON(){
+        return $this->curlRes->toJSON();
     }
 
-    
     /**
      * Curl constructor, Create CurlRequest and CurlResponse Object.
      */
@@ -106,7 +143,7 @@ class Curl {
      * Set Curl response details in CurlResponse Object.
      */
     private final function getCall(){  
-		
+
         $headers = $this->curlReq->getHeaders();
         $url     = $this->curlReq->getUrl(); 
         $cookies = $this->curlReq->getCookies();
@@ -155,14 +192,12 @@ class Curl {
 
             if(($start_m < $start) && !empty($start_m)){
 
-                $end = strpos($http_result, ']');
-                $body = substr($http_result, $start_m, $end);
+                $body = substr($http_result, $start_m);
                 $headers = substr($http_result, 0, $start_m);
 
             } else if(!empty($start)) {
 
-                $end = strpos($http_result, '}');
-                $body = substr($http_result, $start, $end);
+                $body = substr($http_result, $start);
                 $headers = substr($http_result, 0, $start);
             }
             
@@ -207,6 +242,7 @@ class Curl {
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_POST, 1 );
         curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT_MS, 10000);
         curl_setopt($ch, CURLOPT_TIMEOUT_MS, 10000);
         $http_result = curl_exec($ch);
@@ -238,14 +274,12 @@ class Curl {
 
             if(($start_m < $start) && !empty($start_m)){
 
-                $end = strpos($http_result, ']');
-                $body = substr($http_result, $start_m, $end);
+                $body = substr($http_result, $start_m);
                 $headers = substr($http_result, 0, $start_m);
 
             } else if(!empty($start)) {
 
-                $end = strpos($http_result, '}');
-                $body = substr($http_result, $start, $end);
+                $body = substr($http_result, $start);
                 $headers = substr($http_result, 0, $start);
             }
 		
@@ -317,21 +351,20 @@ class Curl {
 			
             /*list($headers, $content) = explode("\r\n\r\n", $http_result, 2); */
             
+            $start_m = strpos($http_result, '[');
+            $start = strpos($http_result, '{');
+            
             if(($start_m < $start) && !empty($start_m)){
 
-                $end = strpos($http_result, ']');
-                $body = substr($http_result, $start_m, $end);
+                $body = substr($http_result, $start_m);
                 $headers = substr($http_result, 0, $start_m);
 
             } else if(!empty($start)) {
 
-                $end = strpos($http_result, '}');
-                $body = substr($http_result, $start, $end);
+                $body = substr($http_result, $start);
                 $headers = substr($http_result, 0, $start);
             }
-		
         }
-		
         $this->curlRes->setStatus($status);
         $this->curlRes->setHeaders($headers);
         $this->curlRes->setBody($body); 
@@ -400,14 +433,12 @@ class Curl {
 
             if(($start_m < $start) && !empty($start_m)){
 
-                $end = strpos($http_result, ']');
-                $body = substr($http_result, $start_m, $end);
+                $body = substr($http_result, $start_m);
                 $headers = substr($http_result, 0, $start_m);
 
             } else if(!empty($start)) {
 
-                $end = strpos($http_result, '}');
-                $body = substr($http_result, $start, $end);
+                $body = substr($http_result, $start);
                 $headers = substr($http_result, 0, $start);
             }
 		
@@ -481,14 +512,12 @@ class Curl {
 
             if(($start_m < $start) && !empty($start_m)){
 
-                $end = strpos($http_result, ']');
-                $body = substr($http_result, $start_m, $end);
+                $body = substr($http_result, $start_m);
                 $headers = substr($http_result, 0, $start_m);
 
             } else if(!empty($start)) {
 
-                $end = strpos($http_result, '}');
-                $body = substr($http_result, $start, $end);
+                $body = substr($http_result, $start);
                 $headers = substr($http_result, 0, $start);
             }
 		

@@ -3,13 +3,13 @@
 namespace speedifii\libraries\mysql;
 
 /**
- * Class Mysql
+ * Class MySql
  * @package speedifii\libraries\mysql
  */
-class Mysql
+class MySql
 {
     /**
-     * @var Mysql
+     * @var MySql
      */
     protected $dbh;
 
@@ -32,7 +32,7 @@ class Mysql
      * @param string $charset
      * @param array $options
      *
-     * @throws MysqlException
+     * @throws MySqlException
      */
     public function __construct($host, $user, $password, $database, $fetchMode = \PDO::FETCH_ASSOC, $charset = 'utf8', array $options = [])
     {
@@ -47,7 +47,7 @@ class Mysql
             }
 
             // use unix socket
-            if (isset($options['unixSocket']))
+            if (isset($options['unixSocket']) && !empty($options['unixSocket']))
             {
                 $dns = 'mysql:unix_socket=' . $options['unixSocket'];
             }
@@ -72,7 +72,7 @@ class Mysql
     /**
      * @param $dbh
      *
-     * @return Mysql
+     * @return MySql
      */
     protected function setDbh($dbh)
     {
@@ -90,9 +90,9 @@ class Mysql
     }
 
     /**
-     * @return Mysql
+     * @return MySql
      */
-    public function close()
+    protected function close()
     {
         $this->dbh = null;
 
@@ -102,7 +102,7 @@ class Mysql
     /**
      * @param int $fetchMode
      *
-     * @return Mysql
+     * @return MySql
      */
     protected function setFetchMode($fetchMode)
     {
@@ -136,7 +136,7 @@ class Mysql
     /**
      * @param \PDOStatement $cursor
      *
-     * @return Mysql
+     * @return MySql
      */
     protected function setLastStatement(\PDOStatement $cursor)
     {
@@ -162,7 +162,7 @@ class Mysql
     }
 
     /**
-     * @return Mysql
+     * @return MySql
      */
     protected function clearLastStatement()
     {
@@ -497,6 +497,38 @@ class Mysql
 
         throw new MysqlException($errorInfo);
     }
+    
+    /**
+     * @param string $query
+     *
+     * @return bool
+     * @throws MysqlException
+     */
+    public function executeSqlQuery($query)
+    {
+        $dbh = $this->getDbh();
+
+        $stmt = $dbh->prepare($query);
+        $response  = $stmt->execute();
+        $result = $stmt->fetchAll();
+        
+        if (count($result) > 0){
+            
+            return $result;
+            
+        } else if($response !== false) {
+            
+            return true;
+            
+        } else {
+            $error = [
+                'query'     => $query,
+                'errorInfo' => $this->prepareErrorInfo($dbh->errorInfo()),
+            ];
+
+            return json_encode($error);
+        }
+    }
 
     /**
      * @param string $dbName
@@ -649,7 +681,7 @@ class Mysql
         }
 
         $response = $this->insertMany($tableName, [$data], $insertIgnore);
-
+    
         if ($response === false)
         {
             return false;
@@ -690,7 +722,7 @@ class Mysql
         $query = str_replace(':PARAM_NAMES', join(', ', $placeholder['param_names']), $query);
 
         // ----------------------------------
-
+  
         $response = $this->prepareInsertReplace($query, $data);
 
         if (empty($response))

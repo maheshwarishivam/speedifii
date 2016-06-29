@@ -42,6 +42,16 @@ class Request
      * @var array $files
      */
     private $files;
+    
+    /**
+     * @var String
+     */
+    private $rawType;
+    
+    /**
+     * @var String
+     */
+    private $rawBody;
 
     /**
      * Request constructor.
@@ -53,7 +63,9 @@ class Request
         $this->cookies = $_COOKIE;
         $this->contentLength = isset($_SERVER['CONTENT_LENGTH']) ? $_SERVER['CONTENT_LENGTH'] : '0';
         $this->contentType = isset($_SERVER['CONTENT_TYPE']) ? $_SERVER['CONTENT_TYPE'] : NULL;
-
+        $this->rawType = '';
+        $this->rawBody = '';
+        
         //Parse request Body
         if ($this->method == 'POST') {
             if (strpos($this->contentType, 'multipart/form-data') !== false || strpos($this->contentType, 'application/x-www-form-urlencoded') !== false) {
@@ -130,6 +142,37 @@ class Request
     public function getFiles()
     {
         return $this->files;
+    }
+    /**
+     * @return String
+     */
+    public function getRawType()
+    {
+        return $this->rawType;
+    }
+
+    /**
+     * @return String
+     */
+    public function getRawBody()
+    {
+        return $this->rawBody;
+    }
+
+    /**
+     * @param String $rawType
+     */
+    public function setRawType($rawType)
+    {
+        $this->rawType = $rawType;
+    }
+
+    /**
+     * @param String $rawBody
+     */
+    public function setRawBody($rawBody)
+    {
+        $this->rawBody = $rawBody;
     }
 
     /**

@@ -9,7 +9,7 @@ use speedifii\libraries\uuid\UUID;
  */
 class Bootstrap
 {
-
+    
     /**
      * Bootstrap constructor.
      *
@@ -40,7 +40,7 @@ class Bootstrap
      */
     private static function init()
     {
-
+ 
         // Define path constants
 
         define('DS', DIRECTORY_SEPARATOR);
@@ -90,6 +90,7 @@ class Bootstrap
 
         //Load Application's configuration files
         include CONFIG_PATH . 'application.config.inc';
+        include CONFIG_PATH . 'database.config.inc';
         include CONFIG_PATH . 'session.config.inc';
         include CONFIG_PATH . 'autoload.config.inc';
         include CONFIG_PATH . 'log.config.inc';
@@ -172,36 +173,6 @@ class Bootstrap
         //Autoload current Language
         require LANGUAGE_PATH . $GLOBALS['config']['application']['language'] . '.language.inc';
 
-        // Define platform, controller, action, for example:
-
-        // index.php/admin/Goods/add
-        // index.php?p/c/a
-
-        define('REQUEST_URI', $_SERVER['REQUEST_URI']);
-
-        $request_value = explode('/', REQUEST_URI);
-
-        $row = array_search('index.php', $request_value);
-        $i = 0;
-        while( $i <= $row ){
-            array_shift($request_value);
-            $i++;
-        }
-
-
-        define('PLATFORM', (isset($request_value[0]) && !empty($request_value[0])) ? $request_value[0] : 'app');
-
-        define('CONTROLLER', isset($request_value[1]) ? $request_value[1] : 'index');
-
-        define('ACTION', isset($request_value[2]) ? $request_value[2] : 'index');
-
-        define('CURR_CONTROLLER_PATH', CONTROLLER_PATH . PLATFORM . DS);
-
-        define('CURR_VIEW_PATH', VIEW_PATH . PLATFORM . DS);
-
-        //Autoload current Controller
-        require CURR_CONTROLLER_PATH . CONTROLLER . '.controller.inc';
-
     }
 
     /**
@@ -239,8 +210,75 @@ class Bootstrap
         define('LOG_IDENTIFIER', ($sessionId ? $sessionId . ' | ' : '') . UUID::v4());
 
         //Register Error, Exception and Shutdown Handlers
+        
+        // Define platform, controller, action, for example:
 
+        // index.php/admin/Goods/add
+        // index.php?p/c/a
 
+        define('REQUEST_URI', $_SERVER['REQUEST_URI']);
+
+        if(REQUEST_URI !== '/'){
+            $request_value = explode('/', REQUEST_URI);
+
+            $row = array_search('index.php', $request_value);
+            $i = 0;
+            while( $i <= $row ){
+                array_shift($request_value);
+                $i++;
+            }
+        } else {
+            $request_value = array('');
+        }
+        
+        //Load route file.
+        $url_variable = array();
+        $routes = file_get_contents(CONFIG_PATH . 'route.config.inc', true);
+        
+        $start = strpos($routes, '{');
+        $route_body = json_decode(substr($routes, $start));
+     
+        foreach($route_body as $key => $value){
+
+            $route_url_method = explode(' ', $key);
+            $route_url = explode('/', trim($route_url_method[1], '/')); 
+            $request_value_count = count($request_value); 
+            if( $route_url_method[0] == $_SERVER['REQUEST_METHOD'] && count($route_url) == $request_value_count){
+                
+                $route_url = explode(':', trim($route_url_method[1], '/'));
+                $main_route_url_array = explode('/', trim($route_url[0],'/'));
+                $route_url_count = count($main_route_url_array);
+                
+                $server_url = array_chunk($request_value, $route_url_count);
+                
+                if( empty(array_diff_assoc($main_route_url_array, $server_url[0]))){ 
+                    
+                    if(($request_value_count - $route_url_count) > 0){ 
+                        for($i = 0; $i < ($request_value_count - $route_url_count); $i++){
+                            $url_variable[trim($route_url[$i+1], '/')] = $request_value[$route_url_count+$i];
+                        }
+                    }
+                    
+                    $request_value[0] = $value->platform; 
+                    $request_value[1] = $value->controller; 
+                    $request_value[2] = $value->action; 
+                }         
+            }
+        } 
+        
+        define('PLATFORM', (isset($request_value[0]) && !empty($request_value[0])) ? $request_value[0] : 'app');
+
+        define('CONTROLLER', isset($request_value[1]) ? $request_value[1] : 'index');
+
+        define('ACTION', isset($request_value[2]) ? $request_value[2] : 'index');
+
+        define('CURR_CONTROLLER_PATH', CONTROLLER_PATH . PLATFORM . DS);
+
+        define('CURR_VIEW_PATH', VIEW_PATH . PLATFORM . DS);
+
+        //Autoload current Controller
+        require CURR_CONTROLLER_PATH . CONTROLLER . '.controller.inc';
+     
         // Instantiate the controller class and call its action method
         $controller_name = CONTROLLER . 'Controller';
 
@@ -248,7 +286,8 @@ class Bootstrap
 
         $controller = new $controller_name();
 
-        $controller->$action_name();
+        //$controller->$action_name();
+        call_user_func_array(array($controller, $action_name), $url_variable);
 
     }
 

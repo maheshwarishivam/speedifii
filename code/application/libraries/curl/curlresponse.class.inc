@@ -180,7 +180,7 @@ class CurlResponse {
      * Set All variables as Array.
      * @return Array
      */
-    private function toArray()
+    public function toArray()
     {
         return array(
             'headers' => $this->headers,
@@ -198,11 +198,10 @@ class CurlResponse {
      * Set All variables as Array.
      * @return JSON Encoded.
      */
-    private function toJSON()
+    public function toJSON()
     {
         return json_encode($this->toArray());
     }
-    
     
     /**
      * Set All variables as Array.
