@@ -1,6 +1,9 @@
 <?php
 
 namespace speedifii\core;
+
+use speedifii\libraries\logger\Logger;
+
 /**
  * Class Request
  * @package speedifii\core
@@ -24,6 +27,11 @@ class Request
     private $method;
 
     /**
+     * @var array Query Parameters
+     */
+    private $qParams;
+
+    /**
      * @var array reqCookies
      */
     private $cookies;
@@ -42,16 +50,41 @@ class Request
      * @var array $files
      */
     private $files;
-    
-    /**
-     * @var String
-     */
-    private $rawType;
-    
+
     /**
      * @var String
      */
     private $rawBody;
+
+    /**
+     * @var string HTTP_X_REQUESTED_WITH
+     */
+    private $httpXRequestedWith;
+
+    /**
+     * @var string REMOTE_ADDR
+     */
+    private $remoteIP;
+
+    /**
+     * @var integer REQUEST_TIME
+     */
+    private $requestTime;
+
+    /**
+     * @var string HTTP_REFERER
+     */
+    private $referer;
+
+    /**
+     * @var string HTTP_USER_AGENT
+     */
+    private $userAgent;
+
+    /**
+     * @var string A unique ID given to every request
+     */
+    private $uuid;
 
     /**
      * Request constructor.
@@ -63,29 +96,41 @@ class Request
         $this->cookies = $_COOKIE;
         $this->contentLength = isset($_SERVER['CONTENT_LENGTH']) ? $_SERVER['CONTENT_LENGTH'] : '0';
         $this->contentType = isset($_SERVER['CONTENT_TYPE']) ? $_SERVER['CONTENT_TYPE'] : NULL;
-        $this->rawType = '';
-        $this->rawBody = '';
-        
+        $this->rawBody = null;
+        $this->qParams = !empty($_GET) ? $_GET : array();
+        $this->httpXRequestedWith = isset($_SERVER['HTTP_X_REQUESTED_WITH'])?$_SERVER['HTTP_X_REQUESTED_WITH']:'';
+        $this->remoteIP = isset($_SERVER['REMOTE_ADDR'])?$_SERVER['REMOTE_ADDR']:'';
+        $this->requestTime = isset($_SERVER['REQUEST_TIME'])?$_SERVER['REQUEST_TIME']:'';
+        $this->referer = isset($_SERVER['HTTP_REFERER'])?$_SERVER['HTTP_REFERER']:'';
+        $this->userAgent = isset($_SERVER['HTTP_USER_AGENT'])?$_SERVER['HTTP_USER_AGENT']:'';
+        $this->uuid = PROCESS_UUID;
+
         //Parse request Body
         if ($this->method == 'POST') {
             if (strpos($this->contentType, 'multipart/form-data') !== false || strpos($this->contentType, 'application/x-www-form-urlencoded') !== false) {
-                $this->body = array_merge($_POST, $_GET);
+                $this->body = array_merge($_POST, $this->qParams);
+                $this->rawBody = join('&', $_POST);
             } else {
                 $reqArr = json_decode(file_get_contents('php://input'), true);
                 if ($reqArr) {
-                    $this->body = array_merge($reqArr, $_GET);
+                    $this->body = array_merge($reqArr, $this->qParams);
+                    $this->rawBody = join('&', $_POST);
                 } else {
-                    $this->body = $_GET;
+                    $this->body = $this->qParams;
                 }
             }
         } else if ($this->method == 'GET') {
-            $this->body = $_GET;
+            $this->body = $this->qParams;
         } else {
-            $this->body = array_merge($this->parseNonGetPostRequest(), $_GET);
+            $nonGetPostBody = $this->parseNonGetPostRequest();
+            $this->body = array_merge($nonGetPostBody, $this->qParams);
+            $this->rawBody = join('&', $nonGetPostBody);
         }
 
         //Parse Request Files
         $this->files = $_FILES;
+
+        Logger::getLogger()->debug('Request received', $this->toArray());
     }
 
     /**
@@ -143,13 +188,6 @@ class Request
     {
         return $this->files;
     }
-    /**
-     * @return String
-     */
-    public function getRawType()
-    {
-        return $this->rawType;
-    }
 
     /**
      * @return String
@@ -160,19 +198,59 @@ class Request
     }
 
     /**
-     * @param String $rawType
+     * @return array
      */
-    public function setRawType($rawType)
+    public function getQParams()
     {
-        $this->rawType = $rawType;
+        return $this->qParams;
     }
 
     /**
-     * @param String $rawBody
+     * @return string
      */
-    public function setRawBody($rawBody)
+    public function getHttpXRequestedWith()
     {
-        $this->rawBody = $rawBody;
+        return $this->httpXRequestedWith;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRemoteIP()
+    {
+        return $this->remoteIP;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getRequestTime()
+    {
+        return $this->requestTime;
+    }
+
+    /**
+     * @return string
+     */
+    public function getReferer()
+    {
+        return $this->referer;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUserAgent()
+    {
+        return $this->userAgent;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUuid()
+    {
+        return $this->uuid;
     }
 
     /**
@@ -195,7 +273,7 @@ class Request
     }
 
     /**
-     * Parse request body and files if request is not GET or POST
+     * Parse request body and files if request is other than GET or POST
      * @return array
      */
     private function parseNonGetPostRequest()
@@ -298,6 +376,44 @@ class Request
 
         }
         return $data;
+    }
+
+    /**
+     * Returns current request object as array
+     * @return array
+     */
+    public function toArray()
+    {
+        return array(
+            'headers' => $this->headers,
+            'body' => $this->body,
+            'cookies' => $this->cookies,
+            'qParams' => $this->qParams,
+            'method' => $this->method,
+            'contentType' => $this->contentType,
+            'contentLength' => $this->contentLength,
+            'files' => $this->files,
+            'rawBody' => $this->rawBody,
+            'uuid' => $this->uuid
+        );
+    }
+
+    /**
+     * Returns the current request as JSON String
+     * @return string
+     */
+    public function toJSON()
+    {
+        return json_encode($this->toArray());
+    }
+
+    /**
+     * Returns the current request as JSON String
+     * @return string
+     */
+    public function __toString()
+    {
+        return json_encode($this->toArray());
     }
 
 }

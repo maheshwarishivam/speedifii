@@ -6,6 +6,16 @@ namespace speedifii\libraries\logger;
  * Class Logger
  * @package speedifii\libraries\logger
  *
+ * Supported Log Levels (in order of priority):
+ *  - emergency
+ *  - alert
+ *  - critical
+ *  - error
+ *  - warning
+ *  - notice
+ *  - info
+ *  - debug
+ *
  * Usage:
  * $log->info('Returned a million search results'); //Prints to the log file
  * $log->error('Oh dear.'); //Prints to the log file

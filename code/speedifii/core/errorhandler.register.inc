@@ -1,5 +1,7 @@
 <?php
 
+use \speedifii\libraries\logger\Logger;
+
 /**
  * Error handler
  * @param $errno
@@ -29,11 +31,11 @@ function speediFiiErrorHandler($errno, $errstr, $errfile, $errline, $errcontext)
  */
 function speediFiiExceptionHandler(\Exception $e)
 {
-    // Perform your exception handling here.
-    //TODO: Log Exception
+    //Log Exception
+    Logger::getLogger()->emergency('Unhandled Exception: ' . $e->getMessage(),array('exception'=>$e));
 
     //Trigger Error
-    trigger_error($e->getMessage(),E_USER_ERROR);
+    trigger_error('Unhandled Exception: ' . $e->getMessage(), E_USER_ERROR);
 }
 
 $previousExceptionHandler = set_exception_handler('speediFiiExceptionHandler');
@@ -58,12 +60,15 @@ function speediFiiShutdownFunction()
     if (isset($err) && isset($handledErrorTypes[$err['type']])) {
         if (!headers_sent()) {
             http_response_code(500);
-            ob_end_flush();
         }
+        //Log error
+        Logger::getLogger()->error("Unhandled error",$err);
     }
+    //Send the output back to client
+    ob_end_flush();
 
     //Write Logs to file
-    \speedifii\libraries\logger\Logger::getLogger()->writeLogs();
+    Logger::getLogger()->writeLogs();
 }
 
 register_shutdown_function('speediFiiShutdownFunction');

@@ -7,10 +7,12 @@ use DateTime;
  * Logger Class to write application logs
  *
  * Usage:
- * $log = speedifii\libraries\logger\Logger('/var/log/', speedifii\libraries\logger\LogLevel::INFO);
- * $log->info('Returned a million search results'); //Prints to the log file
- * $log->error('Oh dear.'); //Prints to the log file
- * $log->debug('x = 5'); //Prints nothing due to current log level
+ *
+ * use speedifii\libraries\logger\Logger;
+ *
+ * Logger->getLogger()->info('Returned a million search results'); //Prints to the log file
+ * Logger->getLogger()->error('Oh dear.'); //Prints to the log file
+ * Logger->getLogger()->debug('x = 5'); //Prints nothing due to current log level
  *
  */
 class LogWriter extends AbstractLogger

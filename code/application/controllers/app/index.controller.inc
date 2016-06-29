@@ -10,21 +10,12 @@ use \speedifii\libraries\logger\Logger;
 class IndexController extends BaseController
 {
     /**
-     * @ Mysql call
+     * @ Index Action
      */
     public function indexAction()
     {
         // TODO: Implement IndexAction() method.
         $this->res->setBody(array('title'=>'Welcome','message'=>'Welcome to SpeediFii'));
-        $this->sendOK();
-    }
-    
-    /**
-     * @inheritDoc
-     */
-    public function ViewAction()
-    {
-        // TODO: Implement ViewAction() method.
         $this->sendOK();
     }
 }

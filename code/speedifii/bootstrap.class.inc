@@ -199,7 +199,9 @@ class Bootstrap
             $sessionId = session_id();
         }
 
-        define('LOG_IDENTIFIER', ($sessionId ? $sessionId . ' | ' : '') . UUID::v4());
+        define('PROCESS_UUID',UUID::v4());
+
+        define('LOG_IDENTIFIER', ($sessionId ? $sessionId . ' | ' : '') . PROCESS_UUID);
 
         // Define platform, controller, action based on routes
 

@@ -206,25 +206,36 @@ abstract class BaseController
      * Application Logs will be written AFTER sending the response.
      *
      * Another response should not be attempted after calling this function. If attempted, it will be logged instead.
-     * @var string $view
      */
-    private function render($view = NULL)
+    private function render()
     {
+        Logger::getLogger()->notice('Rendeering the response');
+        Logger::getLogger()->debug('Response to be sent',$this->res->toArray());
         if (!headers_sent($filename, $linenum)) {
-
-            if ($this->res->getStatus() == 301 || $this->res->getStatus() == 302) {
+            $resStatus = $this->res->getStatus();
+            if ($resStatus == 301 || $resStatus == 302) {
                 $rawBody = $this->res->getRawBody();
-
+                Logger::getLogger()->info('Redirecting to: ' . $rawBody() .' with HTTP Status: ' . $resStatus);
                 //Handle redirects
-                header('Location: ' . $this->appUrl($rawBody) , TRUE, $this->res->getStatus());
+                header('Location: ' . $this->appUrl($rawBody) , TRUE, $resStatus);
             } else {
                 //Send HTTP Response Code
-                http_response_code($this->res->getStatus());
+                http_response_code($resStatus);
+
+                Logger::getLogger()->notice('Response HTTP Status is ' . $resStatus);
+
+                $resCookies = $this->res->getCookies();
+
+                Logger::getLogger()->debug('Setting Response Cookies',$resCookies);
 
                 //Set cookies
-                foreach ($this->res->getCookies() as $cookie => $c) {
+                foreach ($resCookies as $cookie => $c) {
                     setcookie($cookie, $c['value'], time() + $c['expire'], $c['path'], $c['domain'], $c['secure'], $c['httponly']);
                 }
+
+                $resHeaders = $this->res->getHeaders();
+
+                Logger::getLogger()->debug('Setting Response Headers',$resHeaders);
 
                 //Set Headers
                 foreach ($this->res->getHeaders() as $header => $h) {
@@ -232,60 +243,72 @@ abstract class BaseController
                 }
 
                 if($this->res->getRawBody() != null){
-
-                    echo $this->res->getBody();
-
-                } else if ($this->res->getresponseFormat() == 'JSON') {
+                    Logger::getLogger()->info('Sending Raw Body');
+                    $resRawBody = $this->res->getRawBody();
+                    Logger::getLogger()->debug('Raw Body: ' . $resRawBody);
+                    echo $resRawBody;
+                } else if ($this->res->getResponseFormat() == 'JSON') {
+                    Logger::getLogger()->info('Sending JSON Response');
                     //Send JSON response
                     if ($this->res->getBody() != NULL) {
                         //Handle UTF-8 Special Chars
                         $responseJSON = html_entity_decode(json_encode(array_map('htmlentities', $this->res->getBody())));
                         if ($responseJSON) {
+                            Logger::getLogger()->debug('JSON Response: ' . $responseJSON);
                             echo $responseJSON;
                         } else {
-                            //TODO: Log
-                            //log->error('Response format was set to JSON, but malformed response JSON found. Sending 500 Internal Server Error Instead with empty body. Error: ' . json_last_error(), array('body'=>$this->res->getBody()));
+                            Logger::getLogger()->error('Response format was set to JSON, but malformed response JSON found. Sending 500 Internal Server Error instead with empty body. JSON last error Code: ' . json_last_error(), array('body'=>$this->res->getBody()));
                             $this->res->setBody(null);
                             $this->sendError();
                         }
                     }
                 } else {
                     //Send HTML response
-                    if (empty($view)) {
-                        $view = strtolower(PLATFORM) . DS . strtolower(CONTROLLER) . DS . strtolower(ACTION);
-                    }
+                    Logger::getLogger()->info('Sending HTML Response');
+
                     //Bind data to view and render
-                    echo $this->renderView($view, $this->res->getBody());
+                    $view = strtolower(PLATFORM) . DS . strtolower(CONTROLLER) . DS . strtolower(ACTION);
+                    $responseHTML = $this->renderView($view, $this->res->getBody());
+                    Logger::getLogger()->debug('HTML Response: ' . $responseHTML);
+                    echo $responseHTML;
                 }
             }
 
             //Return the output
             ob_end_flush();
         } else {
-            //TODO: Add Log
-            //log->error("Headers already sent in $filename on line $linenum. Not sending response.",array('headersAlreadySent'=>headers_sent(),'newResponse'=>$this->res->toArray()));
+            //Log Error
+            Logger::getLogger()->error("Headers already sent in $filename on line $linenum. Not sending response.",array('headersAlreadySent'=>headers_sent(),'newResponse'=>$this->res->toArray()));
         }
     }
 
     /**
      * Binds data to HTML view and returns the final HTML
      * @param array $data
-     * @param string $path
+     * @param string $viewPath
      * @return string
      */
-    private function renderView($path, Array $data = array())
+    private function renderView($viewPath, Array $data = array())
     {
+        Logger::getLogger()->debug('View: ' . $viewPath);
+        Logger::getLogger()->debug('Data to bind to view',$data);
         return call_user_func(function () use ($data) {
             extract($data, EXTR_SKIP);
             unset($data);
             ob_start();
             include VIEW_PATH . func_get_arg(0) . '.view.phtml';
             return ob_get_clean();
-        }, $path);
+        }, $viewPath);
     }
 
-    protected final function appUrl($data = '/') {
-        return (substr($data,0,4)!='http')?$GLOBALS['config']['application']['app_url'] . trim($data,'/') . '/': $data;
+    /**
+     * Return correct url for relative paths
+     * If an absolute URL is passed instead, returns it as it is
+     * @param string $url
+     * @return string
+     */
+    protected final function appUrl($url = '/') {
+        return (substr($url,0,4)!='http')?$GLOBALS['config']['application']['app_url'] . trim($url,'/') . '/': $url;
     }
 
 }

@@ -27,11 +27,6 @@ class Response
      * @var int
      */
     private $status;
-
-    /**
-     * @var String
-     */
-    private $rawType;
     
     /**
      * @var String
@@ -57,7 +52,6 @@ class Response
         $this->body = array();
         $this->cookies = array();
         $this->status = 200;
-        $this->rawType = '';
         $this->rawBody = '';
         $this->responseFormat = 'HTML';
     }
@@ -185,25 +179,9 @@ class Response
     /**
      * @return String
      */
-    public function getRawType()
-    {
-        return $this->rawType;
-    }
-
-    /**
-     * @return String
-     */
     public function getRawBody()
     {
         return $this->rawBody;
-    }
-
-    /**
-     * @param String $rawType
-     */
-    public function setRawType($rawType)
-    {
-        $this->rawType = $rawType;
     }
 
     /**
@@ -229,13 +207,12 @@ class Response
      * Returns current response object as array
      * @return array
      */
-    private function toArray()
+    public function toArray()
     {
         return array(
             'headers' => $this->headers,
             'body' => $this->body,
             'cookies' => $this->cookies,
-            'rawType' => $this->rawType,
             'rawBody' => $this->rawBody,
             'status' => $this->status,
             'responseFormat' => $this->responseFormat
@@ -246,7 +223,16 @@ class Response
      * Returns the current response as JSON String
      * @return string
      */
-    private function toJSON()
+    public function toJSON()
+    {
+        return json_encode($this->toArray());
+    }
+
+    /**
+     * Returns the current response as JSON String
+     * @return string
+     */
+    public function __toString()
     {
         return json_encode($this->toArray());
     }
