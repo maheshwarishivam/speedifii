@@ -10,7 +10,6 @@ use speedifii\libraries\uuid\UUID;
  */
 class Bootstrap
 {
-
     /**
      * Bootstrap constructor.
      *
@@ -41,7 +40,6 @@ class Bootstrap
      */
     private static function init()
     {
-
         // Define path constants
 
         define('DS', DIRECTORY_SEPARATOR);
@@ -276,7 +274,8 @@ class Bootstrap
 
         $controller = new $controller_name();
 
-        $controller->$action_name();
+        //$controller->$action_name();
+        call_user_func_array(array($controller, $action_name), $url_variable);
 
     }
 

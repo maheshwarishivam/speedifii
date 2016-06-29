@@ -209,11 +209,11 @@ abstract class BaseController
      * @var string $view
      */
     private function render($view = NULL)
-    { 
+    {
         if (!headers_sent($filename, $linenum)) {
 
-            if ($this->res->getStatus() == 301 || $this->res->getStatus() == 302) {  
-                 $rawBody = $this->res->getRawBody(); 
+            if ($this->res->getStatus() == 301 || $this->res->getStatus() == 302) {
+                 $rawBody = $this->res->getRawBody();
 
                 //Handle redirects
                 header('Location: ' . $this->appUrl($rawBody) , TRUE, $this->res->getStatus());
@@ -232,9 +232,9 @@ abstract class BaseController
                 }
 
                 if($this->res->getRawBody() != null){
-                    
+
                     echo $this->res->getBody();
-                    
+
                 } else if ($this->res->getresponseFormat() == 'JSON') {
                     //Send JSON response
                     if ($this->res->getBody() != NULL) {
@@ -283,13 +283,13 @@ abstract class BaseController
             return ob_get_clean();
         }, $path);
     }
-    
+
     protected final function appUrl($data = '/'){
-        
+
         return $GLOBALS['config']['application']['app_url'].trim($data, '/');
-        
+
     }
-    
+
 }
 
 /* EOF */

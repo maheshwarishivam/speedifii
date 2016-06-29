@@ -133,7 +133,7 @@ class CurlRequest {
      * @param Set Body
      */
     public function setBody($body)
-    {
+    { 
         $this->body = $body;
     }
     
@@ -174,7 +174,7 @@ class CurlRequest {
      * Set All variables as Array.
      * @return Array
      */
-    private function toArray()
+    public function toArray()
     {
         return array(
             'url' => $this->url,
@@ -192,7 +192,7 @@ class CurlRequest {
      * Set All variables as Array.
      * @return JSON Encoded.
      */
-    private function toJSON()
+    public function toJSON()
     {
         return json_encode($this->toArray());
     }
