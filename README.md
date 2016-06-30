@@ -1,6 +1,6 @@
 # SpeediFii PHP Framework
 
-Speedifii PHP Framework was created to reduct the time to market for modern day applications.
+Speedifii PHP Framework was created to reduce the time to market for modern day applications.
 
 Features:
 
