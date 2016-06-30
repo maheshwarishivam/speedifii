@@ -2,7 +2,6 @@
 namespace speedifii;
 
 use speedifii\libraries\logger\Logger;
-use speedifii\libraries\mysql\MysqlException;
 use speedifii\libraries\uuid\UUID;
 
 /**
