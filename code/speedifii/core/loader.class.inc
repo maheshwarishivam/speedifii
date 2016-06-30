@@ -31,7 +31,7 @@ class Loader
      */
     public function library($lib)
     {
-        require LIB_PATH . $lib . DS . "logger.autoload.inc";
+        require LIB_PATH . $lib . DS . "$lib.autoload.inc";
     }
 
     /**
