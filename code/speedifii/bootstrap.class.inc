@@ -1,9 +1,11 @@
 <?php
 namespace speedifii;
 
+use Predis\Client;
 use speedifii\libraries\logger\Logger;
 use speedifii\libraries\uuid\UUID;
 use speedifii\core\Loader;
+use speedifii\libraries\redissession\RedisSessionHandler;
 
 /**
  * Class Bootstrap
@@ -178,6 +180,33 @@ class Bootstrap
     private static function handleSessions()
     {
         if ($GLOBALS['config']['session']['sessionHandler'] != 'none') {
+
+            if($GLOBALS['config']['session']['sessionHandler'] != 'redis') {
+
+                //Load redissession core library
+                require CORE_LIB_PATH . 'redissession' . DS . 'redissession.autoload.inc';
+
+                //Create Redis Parameters
+                $redis_params = array(
+                    'scheme' => 'tcp',
+                    'host'   => $GLOBALS['config']['session']['redisHost'],
+                    'port'   => $GLOBALS['config']['session']['redisPort'],
+                );
+
+                if(isset($GLOBALS['config']['session']['redisPassword']) && !empty($GLOBALS['config']['session']['redisPassword'])) {
+                    $redis_params['password'] = $GLOBALS['config']['session']['redisPassword'];
+                }
+
+                $redis_params['database'] = (isset($GLOBALS['config']['session']['redisDatabase']) && !empty($GLOBALS['config']['session']['redisDatabase']))?$GLOBALS['config']['session']['redisDatabase']:0;
+
+                //Create Redis Client
+                $redis_db = new Client($redis_params);
+
+                //Register Custom Session Handler
+                $sessHandler = new RedisSessionHandler($redis_db, $GLOBALS['config']['session']['timeout'], $GLOBALS['config']['session']['name']. ":");
+                session_set_save_handler($sessHandler);
+            }
+
             //Set Name of Session cookie to be used. This should come from config
             session_name($GLOBALS['config']['session']['name']);
 
