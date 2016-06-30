@@ -1,6 +1,7 @@
 <?php
 namespace speedifii;
 
+use speedifii\libraries\logger\Logger;
 use speedifii\libraries\mysql\MysqlException;
 use speedifii\libraries\uuid\UUID;
 
@@ -275,7 +276,8 @@ class Bootstrap
 
         $controller = new $controller_name();
 
-        //$controller->$action_name();
+        Logger::getLogger()->notice('Calling ' . CONTROLLER . ' Controller\'s ' . ACTION . ' Action');
+
         call_user_func_array(array($controller, $action_name), $url_variable);
 
     }

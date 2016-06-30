@@ -209,7 +209,7 @@ abstract class BaseController
      */
     private function render()
     {
-        Logger::getLogger()->notice('Rendeering the response');
+        Logger::getLogger()->notice('Preparing the response');
         Logger::getLogger()->debug('Response to be sent',$this->res->toArray());
         if (!headers_sent($filename, $linenum)) {
             $resStatus = $this->res->getStatus();
@@ -273,9 +273,6 @@ abstract class BaseController
                     echo $responseHTML;
                 }
             }
-
-            //Return the output
-            ob_end_flush();
         } else {
             //Log Error
             Logger::getLogger()->error("Headers already sent in $filename on line $linenum. Not sending response.",array('headersAlreadySent'=>headers_sent(),'newResponse'=>$this->res->toArray()));
