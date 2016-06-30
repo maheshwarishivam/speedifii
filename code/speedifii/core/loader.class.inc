@@ -52,6 +52,16 @@ class Loader
         require LANGUAGE_PATH . "$lang.language.inc";
     }
 
+
+    /**
+     * Load the specified config
+     * @param $lang
+     */
+    public function config($config)
+    {
+        require CONFIG_PATH . "$config.config.inc";
+    }
+
 }
 
 
