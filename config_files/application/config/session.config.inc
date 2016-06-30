@@ -1,4 +1,4 @@
-<?php
+
 
 /**
  * Define the session handler
@@ -6,16 +6,11 @@
  *  - default: Use PHP Default Session
  *  - none: Don't use sessions at all
  */
-$config['session']['sessionHandler'] = 'default';
+{
+  "session": {
+    "sessionHandler": "default",
+    "name": "SpeediFii",
+    "timeout": 1880
+  }
+}
 
-/**
- * Name of session cookie
- */
-$config['session']['name'] = 'SpeediFii';
-
-/**
- * Session Timeout
- */
-$config['session']['timeout'] = 1880; //30 Minutes
-
-/* EOF */

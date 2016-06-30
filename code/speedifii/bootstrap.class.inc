@@ -3,6 +3,7 @@ namespace speedifii;
 
 use speedifii\libraries\logger\Logger;
 use speedifii\libraries\uuid\UUID;
+use speedifii\core\Loader;
 
 /**
  * Class Bootstrap
@@ -88,15 +89,11 @@ class Bootstrap
         $config = array();
         require CORE_CONFIG_PATH . 'defaults.config.inc';
 
-        //Load Application's configuration files
-        include CONFIG_PATH . 'application.config.inc';
-        include CONFIG_PATH . 'session.config.inc';
-        include CONFIG_PATH . 'autoload.config.inc';
-        include CONFIG_PATH . 'log.config.inc';
 
         //Load other required classes
+        
         require CORE_PATH . 'loader.class.inc';
-
+       
         require CORE_PATH . 'request.class.inc';
 
         require CORE_PATH . 'response.class.inc';
@@ -115,10 +112,18 @@ class Bootstrap
         //UUID Library
         require CORE_LIB_PATH . 'uuid' . DS . 'uuid.autoload.inc';
 
+        //Load Application's configuration files
+        $loaderObj = new Loader();
+        $loaderObj->config('application');
+        $loaderObj->config('session');
+        $loaderObj->config('autoload');
+        $loaderObj->config('log');
+        
         //Set Timezone
         date_default_timezone_set($GLOBALS['config']['application']['timezone']);
-
+        
         //Language is available from $GLOBALS['config']['application']['language'];
+        
 
     }
 

@@ -59,8 +59,18 @@ class Loader
      */
     public function config($config)
     {
-        require CONFIG_PATH . "$config.config.inc";
+        try{
+            $configfile = file_get_contents(CONFIG_PATH . "$config.config.inc", true);
+            $start = strpos($configfile, '{');
+            $config_body = json_decode(trim(substr($configfile, $start)), TRUE);
+
+            $GLOBALS['config']=array_merge($GLOBALS['config'],$config_body);
+        } catch (Exception $e) {
+            throw $e;
+        }
     }
+    
+ 
 
 }
 

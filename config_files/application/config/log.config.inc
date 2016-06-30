@@ -1,10 +1,8 @@
-<?php
-/**
- * Log Files Directory
- */
-$config['log']['directory'] = ROOT . 'logs';
+
+
 
 /**
+ * Log Files Directory
  * Log Level
  *
  * Possible Values are (in order of highest priority to lowest):
@@ -17,9 +15,10 @@ $config['log']['directory'] = ROOT . 'logs';
  * - info;
  * - debug;
  */
-$config['log']['level'] = 'debug';
-
-/**
- * Log file Prefix
- */
-$config['log']['logFilePrefix'] = 'application_';
+{
+  "log": {
+    "directory": "/var/www/html/speedifii/code/logs",
+    "level": "debug",
+    "logFilePrefix": "application_"
+  }
+}
