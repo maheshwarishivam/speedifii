@@ -100,7 +100,7 @@ class Request
         $this->qParams = !empty($_GET) ? $_GET : array();
         $this->httpXRequestedWith = isset($_SERVER['HTTP_X_REQUESTED_WITH'])?$_SERVER['HTTP_X_REQUESTED_WITH']:'';
         $this->remoteIP = isset($_SERVER['REMOTE_ADDR'])?$_SERVER['REMOTE_ADDR']:'';
-        $this->requestTime = isset($_SERVER['REQUEST_TIME'])?$_SERVER['REQUEST_TIME']:'';
+        $this->requestTime = isset($_SERVER['REQUEST_TIME'])?$_SERVER['REQUEST_TIME']:microtime();
         $this->referer = isset($_SERVER['HTTP_REFERER'])?$_SERVER['HTTP_REFERER']:'';
         $this->userAgent = isset($_SERVER['HTTP_USER_AGENT'])?$_SERVER['HTTP_USER_AGENT']:'';
         $this->uuid = PROCESS_UUID;
