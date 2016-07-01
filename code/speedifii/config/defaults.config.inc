@@ -60,4 +60,8 @@ $config['log']['level'] = 'debug';
  */
 $config['log']['logFilePrefix'] = 'application_';
 
+/**
+ * Autoload
+ */
+$config['autoload'] = array();
 /* EOF */

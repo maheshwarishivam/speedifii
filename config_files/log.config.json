@@ -14,9 +14,7 @@
 *         - debug;
 */
 {
-  "log": {
-    "directory": "/var/www/html/speedifii/code/logs",
-    "level": "debug",
-    "logFilePrefix": "application_"
-  }
+  "directory": "/Users/shivam/www/personal/speedifii/logs",
+  "level": "debug",
+  "logFilePrefix": "application_"
 }
