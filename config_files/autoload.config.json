@@ -1,0 +1,15 @@
+/**
+ * Define which configs, helpers, libraries, models, controllers and languages to automatically load on every request
+ */
+
+{
+  "config": ["database"],
+  "helpers": [],
+  "libraries": [
+    "curl",
+    "mysql"
+  ],
+  "models": [],
+  "controllers": [],
+  "languages": []
+}

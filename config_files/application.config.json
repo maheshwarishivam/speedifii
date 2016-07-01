@@ -1,0 +1,8 @@
+/*
+ * The main application configuration file
+ */
+{
+  "app_url": "http://speedifii.local/",
+  "timezone": "Asia/Kolkata",
+  "language": "en_us"
+}

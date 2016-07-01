@@ -45,34 +45,51 @@ class Loader
 
     /**
      * Load the specified language
-     * @param $lang
+     * @param $lang Language to load
+     * @throws \Exception
      */
     public function language($lang)
     {
-        require LANGUAGE_PATH . "$lang.language.inc";
+        try {
+            $langFile = file_get_contents(LANGUAGE_PATH . "$lang.language.json", true);
+            $start = strpos($langFile, '{');
+            $langBody = json_decode(trim(substr($langFile, $start)), true);
+
+            if($langBody) {
+                $GLOBALS['language'][$lang] = $langBody;
+            } else {
+                throw new \Exception('Invalid Language file: ' . LANGUAGE_PATH . "$lang.language.json");
+            }
+        } catch (\Exception $e) {
+            throw $e;
+        }
     }
 
 
     /**
      * Load the specified config
-     * @param $lang
+     * @param $config config to load
+     * @throws \Exception
      */
     public function config($config)
     {
-        try{
-            $configfile = file_get_contents(CONFIG_PATH . "$config.config.inc", true);
-            $start = strpos($configfile, '{');
-            $config_body = json_decode(trim(substr($configfile, $start)), TRUE);
+        try {
+            $configFile = file_get_contents(CONFIG_PATH . "$config.config.json", true);
+            $start = strpos($configFile, '{');
+            $configBody = json_decode(trim(substr($configFile, $start)), TRUE);
 
-            $GLOBALS['config']=array_merge($GLOBALS['config'],$config_body);
-        } catch (Exception $e) {
+            if($configBody) {
+                if(!isset($GLOBALS['config'][$config]) || !is_array($GLOBALS['config'][$config])) {
+                    $GLOBALS['config'][$config] = array();
+                }
+                $GLOBALS['config'][$config] = array_merge($GLOBALS['config'][$config], $configBody);
+            } else {
+                throw new \Exception('Invalid Config file: ' . CONFIG_PATH . "$config.config.json");
+            }
+        } catch (\Exception $e) {
             throw $e;
         }
     }
-    
- 
-
 }
-
 
 /* EOF */

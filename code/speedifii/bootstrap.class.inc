@@ -91,6 +91,8 @@ class Bootstrap
         $config = array();
         require CORE_CONFIG_PATH . 'defaults.config.inc';
 
+        global $language;
+        $language = array();
 
         //Load other required classes
         
@@ -99,8 +101,6 @@ class Bootstrap
         require CORE_PATH . 'request.class.inc';
 
         require CORE_PATH . 'response.class.inc';
-
-        require CORE_MODEL_PATH . 'base.model.inc';
 
         require CORE_CONTROLLER_PATH . 'base.controller.inc';
 
@@ -120,13 +120,13 @@ class Bootstrap
         $loaderObj->config('session');
         $loaderObj->config('autoload');
         $loaderObj->config('log');
-        
+
         //Set Timezone
         date_default_timezone_set($GLOBALS['config']['application']['timezone']);
-        
-        //Language is available from $GLOBALS['config']['application']['language'];
-        
+        //Autoload Current Language
+        $loaderObj->language($GLOBALS['config']['application']['language']);
 
+        unset($loaderObj);
     }
 
     /**
@@ -134,11 +134,26 @@ class Bootstrap
      */
     private static function autoload()
     {
-        // Autoload config files
-        foreach ($GLOBALS['config']['autoload']['config'] as $fileName) {
-            if (!empty($fileName)) {
-                require CONFIG_PATH . "$fileName.config.inc";
+        if(!empty($GLOBALS['config']['autoload']['config'])) {
+            $loaderObj = new Loader();
+            // Autoload config files
+            foreach ($GLOBALS['config']['autoload']['config'] as $fileName) {
+                if (!empty($fileName)) {
+                    $loaderObj->config($fileName);
+                }
             }
+            unset($loaderObj);
+        }
+
+        if(!empty($GLOBALS['config']['autoload']['languages'])) {
+            $loaderObj = new Loader();
+            // Autoload config files
+            foreach ($GLOBALS['config']['autoload']['languages'] as $fileName) {
+                if (!empty($fileName)) {
+                    $loaderObj->language($fileName);
+                }
+            }
+            unset($loaderObj);
         }
 
         // Autoload helpers
@@ -161,17 +176,6 @@ class Bootstrap
                 require MODEL_PATH . "$fileName.model.inc";
             }
         }
-
-        // Autoload languages
-        foreach ($GLOBALS['config']['autoload']['languages'] as $fileName) {
-            if (!empty($fileName)) {
-                require LANGUAGE_PATH . "$fileName.language.inc";
-            }
-        }
-
-        //Autoload current Language
-        require_once LANGUAGE_PATH . $GLOBALS['config']['application']['language'] . '.language.inc';
-
     }
 
     /**
@@ -256,13 +260,12 @@ class Bootstrap
 
         //Load route file.
         $url_variable = array();
-        $routes = file_get_contents(CONFIG_PATH . 'route.config.inc', true);
+        $routes = file_get_contents(CONFIG_PATH . 'route.config.json', true);
 
         $start = strpos($routes, '{');
         $route_body = json_decode(trim(substr($routes, $start)));
 
         foreach ($route_body as $key => $value) {
-
             $route_url_method = explode(' ', $key);
             $route_url = explode('/', trim($route_url_method[1], '/'));
             $request_value_count = count($request_value);

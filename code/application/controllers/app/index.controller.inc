@@ -16,6 +16,11 @@ class IndexController extends BaseController
     {
         // TODO: Implement IndexAction() method.
         $this->res->setBody(array('title'=>'Welcome','message'=>'Welcome to SpeediFii'));
+
+        var_dump($GLOBALS['config']);
+
+        var_dump($GLOBALS['language']);
+
         $this->sendOK();
     }
 }
