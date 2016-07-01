@@ -8,13 +8,13 @@ use speedifii\core\Loader;
 use speedifii\libraries\redissession\RedisSessionHandler;
 
 /**
- * Class Bootstrap
+ * Class SpeediFii
  * @package speedifii
  */
-class Bootstrap
+class SpeediFii
 {
     /**
-     * Bootstrap constructor.
+     * SpeediFii constructor.
      *
      * Private to prevent instantiation
      */
@@ -312,10 +312,14 @@ class Bootstrap
 
         $controller = new $controller_name();
 
-        Logger::getLogger()->notice('Calling ' . CONTROLLER . ' Controller\'s ' . ACTION . ' Action');
+        self::log()->notice('Calling ' . CONTROLLER . ' Controller\'s ' . ACTION . ' Action');
 
         call_user_func_array(array($controller, $action_name), $url_variable);
 
+    }
+
+    public static function log() {
+        return Logger::getLogger();
     }
 
 }

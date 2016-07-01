@@ -5,7 +5,7 @@ namespace speedifii\controllers;
 use speedifii\core\Loader;
 use speedifii\core\Request;
 use speedifii\core\Response;
-use speedifii\libraries\logger\Logger;
+use speedifii\SpeediFii;
 
 /**
  * Class BaseController
@@ -209,24 +209,24 @@ abstract class BaseController
      */
     private function render()
     {
-        Logger::getLogger()->notice('Preparing the response');
-        Logger::getLogger()->debug('Response to be sent',$this->res->toArray());
+        SpeediFii::log()->notice('Preparing the response');
+        SpeediFii::log()->debug('Response to be sent',$this->res->toArray());
         if (!headers_sent($filename, $linenum)) {
             $resStatus = $this->res->getStatus();
             if ($resStatus == 301 || $resStatus == 302) {
                 $rawBody = $this->res->getRawBody();
-                Logger::getLogger()->info('Redirecting to: ' . $rawBody() .' with HTTP Status: ' . $resStatus);
+                SpeediFii::log()->info('Redirecting to: ' . $rawBody() .' with HTTP Status: ' . $resStatus);
                 //Handle redirects
                 header('Location: ' . $this->appUrl($rawBody) , TRUE, $resStatus);
             } else {
                 //Send HTTP Response Code
                 http_response_code($resStatus);
 
-                Logger::getLogger()->notice('Response HTTP Status is ' . $resStatus);
+                SpeediFii::log()->notice('Response HTTP Status is ' . $resStatus);
 
                 $resCookies = $this->res->getCookies();
 
-                Logger::getLogger()->debug('Setting Response Cookies',$resCookies);
+                SpeediFii::log()->debug('Setting Response Cookies',$resCookies);
 
                 //Set cookies
                 foreach ($resCookies as $cookie => $c) {
@@ -235,7 +235,7 @@ abstract class BaseController
 
                 $resHeaders = $this->res->getHeaders();
 
-                Logger::getLogger()->debug('Setting Response Headers',$resHeaders);
+                SpeediFii::log()->debug('Setting Response Headers',$resHeaders);
 
                 //Set Headers
                 foreach ($this->res->getHeaders() as $header => $h) {
@@ -243,39 +243,39 @@ abstract class BaseController
                 }
 
                 if($this->res->getRawBody() != null){
-                    Logger::getLogger()->info('Sending Raw Body');
+                    SpeediFii::log()->info('Sending Raw Body');
                     $resRawBody = $this->res->getRawBody();
-                    Logger::getLogger()->debug('Raw Body: ' . $resRawBody);
+                    SpeediFii::log()->debug('Raw Body: ' . $resRawBody);
                     echo $resRawBody;
                 } else if ($this->res->getResponseFormat() == 'JSON') {
-                    Logger::getLogger()->info('Sending JSON Response');
+                    SpeediFii::log()->info('Sending JSON Response');
                     //Send JSON response
                     if ($this->res->getBody() != NULL) {
                         //Handle UTF-8 Special Chars
                         $responseJSON = html_entity_decode(json_encode(array_map('htmlentities', $this->res->getBody())));
                         if ($responseJSON) {
-                            Logger::getLogger()->debug('JSON Response: ' . $responseJSON);
+                            SpeediFii::log()->debug('JSON Response: ' . $responseJSON);
                             echo $responseJSON;
                         } else {
-                            Logger::getLogger()->error('Response format was set to JSON, but malformed response JSON found. Sending 500 Internal Server Error instead with empty body. JSON last error Code: ' . json_last_error(), array('body'=>$this->res->getBody()));
+                            SpeediFii::log()->error('Response format was set to JSON, but malformed response JSON found. Sending 500 Internal Server Error instead with empty body. JSON last error Code: ' . json_last_error(), array('body'=>$this->res->getBody()));
                             $this->res->setBody(null);
                             $this->sendError();
                         }
                     }
                 } else {
                     //Send HTML response
-                    Logger::getLogger()->info('Sending HTML Response');
+                    SpeediFii::log()->info('Sending HTML Response');
 
                     //Bind data to view and render
                     $view = strtolower(PLATFORM) . DS . strtolower(CONTROLLER) . DS . strtolower(ACTION);
                     $responseHTML = $this->renderView($view, $this->res->getBody());
-                    Logger::getLogger()->debug('HTML Response: ' . $responseHTML);
+                    SpeediFii::log()->debug('HTML Response: ' . $responseHTML);
                     echo $responseHTML;
                 }
             }
         } else {
             //Log Error
-            Logger::getLogger()->error("Headers already sent in $filename on line $linenum. Not sending response.",array('headersAlreadySent'=>headers_sent(),'newResponse'=>$this->res->toArray()));
+            SpeediFii::log()->error("Headers already sent in $filename on line $linenum. Not sending response.",array('headersAlreadySent'=>headers_sent(),'newResponse'=>$this->res->toArray()));
         }
     }
 
@@ -287,8 +287,8 @@ abstract class BaseController
      */
     private function renderView($viewPath, Array $data = array())
     {
-        Logger::getLogger()->debug('View: ' . $viewPath);
-        Logger::getLogger()->debug('Data to bind to view',$data);
+        SpeediFii::log()->debug('View: ' . $viewPath);
+        SpeediFii::log()->debug('Data to bind to view',$data);
         return call_user_func(function () use ($data) {
             extract($data, EXTR_SKIP);
             unset($data);

@@ -1,7 +1,6 @@
 <?php
 
 use speedifii\controllers\BaseController;
-use \speedifii\libraries\logger\Logger;
 
 /**
  * Class IndexController
@@ -16,7 +15,6 @@ class IndexController extends BaseController
     {
         // TODO: Implement IndexAction() method.
         $this->res->setBody(array('title'=>'Welcome','message'=>'Welcome to SpeediFii'));
-
         $this->sendOK();
     }
 }

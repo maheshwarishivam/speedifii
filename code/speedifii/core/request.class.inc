@@ -2,7 +2,7 @@
 
 namespace speedifii\core;
 
-use speedifii\libraries\logger\Logger;
+use speedifii\SpeediFii;
 
 /**
  * Class Request
@@ -130,7 +130,7 @@ class Request
         //Parse Request Files
         $this->files = $_FILES;
 
-        Logger::getLogger()->debug('Request received', $this->toArray());
+        SpeediFii::log()->debug('Request received', $this->toArray());
     }
 
     /**
