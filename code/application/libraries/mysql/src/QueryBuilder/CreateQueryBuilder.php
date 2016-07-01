@@ -1,12 +1,12 @@
 <?php
 
-namespace speedifii\libraries\mysql\QueryBuilder;
+namespace Simplon\Mysql\QueryBuilder;
 
-use speedifii\libraries\mysql\Crud\CrudModelInterface;
+use Simplon\Mysql\Crud\CrudModelInterface;
 
 /**
  * Class CreateQueryBuilder
- * @package speedifii\libraries\mysql\querybuilder
+ * @package Simplon\Mysql\QueryBuilder
  */
 class CreateQueryBuilder
 {
@@ -115,5 +115,3 @@ class CreateQueryBuilder
         return $this;
     }
 }
-
-/* EOF */

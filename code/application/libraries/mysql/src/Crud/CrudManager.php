@@ -1,18 +1,18 @@
 <?php
 
-namespace speedifii\libraries\mysql\crud;
+namespace Simplon\Mysql\Crud;
 
-use speedifii\libraries\mysql\Mysql;
-use speedifii\libraries\mysql\MysqlException;
-use speedifii\libraries\mysql\MysqlQueryIterator;
-use speedifii\libraries\mysql\QueryBuilder\CreateQueryBuilder;
-use speedifii\libraries\mysql\QueryBuilder\DeleteQueryBuilder;
-use speedifii\libraries\mysql\QueryBuilder\ReadQueryBuilder;
-use speedifii\libraries\mysql\QueryBuilder\UpdateQueryBuilder;
+use Simplon\Mysql\Mysql;
+use Simplon\Mysql\MysqlException;
+use Simplon\Mysql\MysqlQueryIterator;
+use Simplon\Mysql\QueryBuilder\CreateQueryBuilder;
+use Simplon\Mysql\QueryBuilder\DeleteQueryBuilder;
+use Simplon\Mysql\QueryBuilder\ReadQueryBuilder;
+use Simplon\Mysql\QueryBuilder\UpdateQueryBuilder;
 
 /**
  * Class CrudManager
- * @package speedifii\libraries\mysql\crud
+ * @package Simplon\Mysql\Crud
  */
 class CrudManager
 {
@@ -174,5 +174,3 @@ class CrudManager
         return join(' AND ', $condsString);
     }
 }
-
-/* EOF */

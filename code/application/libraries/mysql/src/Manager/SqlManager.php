@@ -1,13 +1,13 @@
 <?php
 
-namespace speedifii\libraries\mysql\Manager;
+namespace Simplon\Mysql\Manager;
 
-use speedifii\libraries\mysql\Mysql;
-use speedifii\libraries\mysql\MysqlQueryIterator;
+use Simplon\Mysql\Mysql;
+use Simplon\Mysql\MysqlQueryIterator;
 
 /**
  * Class SqlManager
- * @package speedifii\libraries\mysql\manager
+ * @package Simplon\Mysql\Manager
  */
 class SqlManager
 {
@@ -201,5 +201,3 @@ class SqlManager
         return $this->mysql;
     }
 }
-
-/* EOF */

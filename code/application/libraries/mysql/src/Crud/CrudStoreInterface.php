@@ -1,13 +1,13 @@
 <?php
 
-namespace speedifii\libraries\mysql\crud;
+namespace Simplon\Mysql\Crud;
 
-use speedifii\libraries\mysql\Mysql;
-use speedifii\libraries\mysql\MysqlException;
+use Simplon\Mysql\Mysql;
+use Simplon\Mysql\MysqlException;
 
 /**
  * Interface CrudStoreInterface
- * @package speedifii\libraries\mysql\crud
+ * @package Simplon\Mysql\Crud
  */
 interface CrudStoreInterface
 {
@@ -64,5 +64,3 @@ interface CrudStoreInterface
      */
     public function crudDelete(array $conds);
 }
-
-/* EOF */

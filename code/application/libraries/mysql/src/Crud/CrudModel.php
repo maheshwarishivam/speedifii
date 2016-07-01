@@ -1,10 +1,10 @@
 <?php
 
-namespace speedifii\libraries\mysql\crud;
+namespace Simplon\Mysql\Crud;
 
 /**
  * Class CrudModel
- * @package speedifii\libraries\mysql\crud
+ * @package Simplon\Mysql\Crud
  */
 abstract class CrudModel implements CrudModelInterface
 {
@@ -114,5 +114,3 @@ abstract class CrudModel implements CrudModelInterface
         return lcfirst(str_replace(' ', '', $string));
     }
 }
-
-/* EOF */
