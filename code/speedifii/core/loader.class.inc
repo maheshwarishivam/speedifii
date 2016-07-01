@@ -55,23 +55,21 @@ class Loader
 
     /**
      * Load the specified config
-     * @param $lang
+     * @param $config
+     * @throws \Exception
      */
     public function config($config)
     {
-        try{
-            $configfile = file_get_contents(CONFIG_PATH . "$config.config.inc", true);
-            $start = strpos($configfile, '{');
-            $config_body = json_decode(trim(substr($configfile, $start)), TRUE);
+        try {
+            $configFile = file_get_contents(CONFIG_PATH . "$config.config.inc", true);
+            $start = strpos($configFile, '{');
+            $config_body = json_decode(trim(substr($configFile, $start)), TRUE);
 
-            $GLOBALS['config']=array_merge($GLOBALS['config'],$config_body);
-        } catch (Exception $e) {
+            $GLOBALS['config'] = array_merge($GLOBALS['config'], $config_body);
+        } catch (\Exception $e) {
             throw $e;
         }
     }
-    
- 
-
 }
 
 
