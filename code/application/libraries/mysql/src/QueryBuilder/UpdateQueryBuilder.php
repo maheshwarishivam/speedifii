@@ -1,14 +1,14 @@
 <?php
 
-namespace speedifii\libraries\mysql\QueryBuilder;
+namespace Simplon\Mysql\QueryBuilder;
 
-use speedifii\libraries\mysql\Crud\CrudModelInterface;
+use Simplon\Mysql\Crud\CrudModelInterface;
 
 /**
- * Class DeleteQueryBuilder
- * @package speedifii\libraries\mysql\querybuilder
+ * Class UpdateQueryBuilder
+ * @package Simplon\Mysql\QueryBuilder
  */
-class DeleteQueryBuilder
+class UpdateQueryBuilder
 {
     /**
      * @var CrudModelInterface
@@ -36,6 +36,11 @@ class DeleteQueryBuilder
     protected $condsQuery;
 
     /**
+     * @var array
+     */
+    protected $data;
+
+    /**
      * @return CrudModelInterface
      */
     public function getModel()
@@ -46,7 +51,7 @@ class DeleteQueryBuilder
     /**
      * @param CrudModelInterface $model
      *
-     * @return DeleteQueryBuilder
+     * @return UpdateQueryBuilder
      */
     public function setModel(CrudModelInterface $model)
     {
@@ -66,7 +71,7 @@ class DeleteQueryBuilder
     /**
      * @param string $tableName
      *
-     * @return DeleteQueryBuilder
+     * @return UpdateQueryBuilder
      */
     public function setTableName($tableName)
     {
@@ -86,7 +91,7 @@ class DeleteQueryBuilder
     /**
      * @param string $query
      *
-     * @return DeleteQueryBuilder
+     * @return UpdateQueryBuilder
      */
     public function setQuery($query)
     {
@@ -106,7 +111,7 @@ class DeleteQueryBuilder
     /**
      * @param array $conds
      *
-     * @return DeleteQueryBuilder
+     * @return UpdateQueryBuilder
      */
     public function setConds(array $conds)
     {
@@ -126,7 +131,7 @@ class DeleteQueryBuilder
     /**
      * @param string $condsQuery
      *
-     * @return DeleteQueryBuilder
+     * @return UpdateQueryBuilder
      */
     public function setCondsQuery($condsQuery)
     {
@@ -134,6 +139,29 @@ class DeleteQueryBuilder
 
         return $this;
     }
-}
 
-/* EOF */
+    /**
+     * @return array
+     */
+    public function getData()
+    {
+        if ($this->getModel() instanceof CrudModelInterface)
+        {
+            return $this->getModel()->toArray();
+        }
+
+        return $this->data;
+    }
+
+    /**
+     * @param array $data
+     *
+     * @return UpdateQueryBuilder
+     */
+    public function setData(array $data)
+    {
+        $this->data = $data;
+
+        return $this;
+    }
+}

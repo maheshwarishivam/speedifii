@@ -1,10 +1,10 @@
 <?php
 
-namespace speedifii\libraries\mysql\crud;
+namespace Simplon\Mysql\Crud;
 
 /**
  * Interface CrudModelInterface
- * @package speedifii\libraries\mysql\crud
+ * @package Simplon\Mysql\Crud
  */
 interface CrudModelInterface
 {
@@ -30,5 +30,3 @@ interface CrudModelInterface
      */
     public function toArray();
 }
-
-/* EOF */

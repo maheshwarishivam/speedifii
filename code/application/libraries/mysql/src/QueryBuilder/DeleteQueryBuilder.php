@@ -1,14 +1,14 @@
 <?php
 
-namespace speedifii\libraries\mysql\QueryBuilder;
+namespace Simplon\Mysql\QueryBuilder;
 
-use speedifii\libraries\mysql\Crud\CrudModelInterface;
+use Simplon\Mysql\Crud\CrudModelInterface;
 
 /**
- * Class UpdateQueryBuilder
- * @package speedifii\libraries\mysql\querybuilder
+ * Class DeleteQueryBuilder
+ * @package Simplon\Mysql\QueryBuilder
  */
-class UpdateQueryBuilder
+class DeleteQueryBuilder
 {
     /**
      * @var CrudModelInterface
@@ -36,11 +36,6 @@ class UpdateQueryBuilder
     protected $condsQuery;
 
     /**
-     * @var array
-     */
-    protected $data;
-
-    /**
      * @return CrudModelInterface
      */
     public function getModel()
@@ -51,7 +46,7 @@ class UpdateQueryBuilder
     /**
      * @param CrudModelInterface $model
      *
-     * @return UpdateQueryBuilder
+     * @return DeleteQueryBuilder
      */
     public function setModel(CrudModelInterface $model)
     {
@@ -71,7 +66,7 @@ class UpdateQueryBuilder
     /**
      * @param string $tableName
      *
-     * @return UpdateQueryBuilder
+     * @return DeleteQueryBuilder
      */
     public function setTableName($tableName)
     {
@@ -91,7 +86,7 @@ class UpdateQueryBuilder
     /**
      * @param string $query
      *
-     * @return UpdateQueryBuilder
+     * @return DeleteQueryBuilder
      */
     public function setQuery($query)
     {
@@ -111,7 +106,7 @@ class UpdateQueryBuilder
     /**
      * @param array $conds
      *
-     * @return UpdateQueryBuilder
+     * @return DeleteQueryBuilder
      */
     public function setConds(array $conds)
     {
@@ -131,7 +126,7 @@ class UpdateQueryBuilder
     /**
      * @param string $condsQuery
      *
-     * @return UpdateQueryBuilder
+     * @return DeleteQueryBuilder
      */
     public function setCondsQuery($condsQuery)
     {
@@ -139,31 +134,4 @@ class UpdateQueryBuilder
 
         return $this;
     }
-
-    /**
-     * @return array
-     */
-    public function getData()
-    {
-        if ($this->getModel() instanceof CrudModelInterface)
-        {
-            return $this->getModel()->toArray();
-        }
-
-        return $this->data;
-    }
-
-    /**
-     * @param array $data
-     *
-     * @return UpdateQueryBuilder
-     */
-    public function setData(array $data)
-    {
-        $this->data = $data;
-
-        return $this;
-    }
 }
-
-/* EOF */

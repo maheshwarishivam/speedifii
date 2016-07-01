@@ -1,10 +1,10 @@
 <?php
 
-namespace speedifii\libraries\mysql\QueryBuilder;
+namespace Simplon\Mysql\QueryBuilder;
 
 /**
  * Class ReadQueryBuilder
- * @package speedifii\libraries\mysql\querybuilder
+ * @package Simplon\Mysql\QueryBuilder
  */
 class ReadQueryBuilder
 {
@@ -405,5 +405,3 @@ class ReadQueryBuilder
         return $this;
     }
 }
-
-/* EOF */

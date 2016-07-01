@@ -1,9 +1,7 @@
 <?php
 
-namespace speedifii\libraries\mysql;
+namespace Simplon\Mysql;
 
 class MysqlException extends \Exception
 {
 }
-
-/* EOF */

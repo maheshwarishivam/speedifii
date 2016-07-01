@@ -1,6 +1,6 @@
 <?php
 
-namespace speedifii\libraries\mysql\Manager;
+namespace Simplon\Mysql\Manager;
 
 class SqlQueryBuilder
 {
@@ -190,5 +190,3 @@ class SqlQueryBuilder
         return $this->enableInsertIgnore !== false ? true : false;
     }
 }
-
-/* EOF */

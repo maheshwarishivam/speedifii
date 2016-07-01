@@ -1,6 +1,6 @@
 <?php
 
-namespace speedifii\libraries\mysql;
+namespace Simplon\Mysql;
 
 class MysqlQueryIterator implements \Iterator
 {
@@ -59,5 +59,3 @@ class MysqlQueryIterator implements \Iterator
         return $this->data !== false;
     }
 }
-
-/* EOF */
