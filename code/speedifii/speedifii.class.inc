@@ -318,6 +318,10 @@ class SpeediFii
 
     }
 
+    /**
+     * Helper method to write logs
+     * @return Logger
+     */
     public static function log() {
         return Logger::getLogger();
     }
