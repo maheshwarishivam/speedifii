@@ -1,3 +1,4 @@
 {
-  "Welcome": "Welcome"
+  "Welcome": "Welcome USER_NAME",
+  "Welcome to SpeediFii": "Welcome to the world of APP_NAME, USER_FULL_NAME"
 }

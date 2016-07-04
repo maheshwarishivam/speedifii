@@ -95,9 +95,8 @@ class SpeediFii
         $language = array();
 
         //Load other required classes
-        
         require CORE_PATH . 'loader.class.inc';
-       
+
         require CORE_PATH . 'request.class.inc';
 
         require CORE_PATH . 'response.class.inc';
@@ -134,7 +133,7 @@ class SpeediFii
      */
     private static function autoload()
     {
-        if(!empty($GLOBALS['config']['autoload']['config'])) {
+        if (!empty($GLOBALS['config']['autoload']['config'])) {
             $loaderObj = new Loader();
             // Autoload config files
             foreach ($GLOBALS['config']['autoload']['config'] as $fileName) {
@@ -145,7 +144,7 @@ class SpeediFii
             unset($loaderObj);
         }
 
-        if(!empty($GLOBALS['config']['autoload']['languages'])) {
+        if (!empty($GLOBALS['config']['autoload']['languages'])) {
             $loaderObj = new Loader();
             // Autoload config files
             foreach ($GLOBALS['config']['autoload']['languages'] as $fileName) {
@@ -185,7 +184,7 @@ class SpeediFii
     {
         if ($GLOBALS['config']['session']['sessionHandler'] != 'none') {
 
-            if($GLOBALS['config']['session']['sessionHandler'] != 'redis') {
+            if ($GLOBALS['config']['session']['sessionHandler'] != 'redis') {
 
                 //Load redissession core library
                 require CORE_LIB_PATH . 'redissession' . DS . 'redissession.autoload.inc';
@@ -193,21 +192,21 @@ class SpeediFii
                 //Create Redis Parameters
                 $redis_params = array(
                     'scheme' => 'tcp',
-                    'host'   => $GLOBALS['config']['session']['redisHost'],
-                    'port'   => $GLOBALS['config']['session']['redisPort'],
+                    'host' => $GLOBALS['config']['session']['redisHost'],
+                    'port' => $GLOBALS['config']['session']['redisPort'],
                 );
 
-                if(isset($GLOBALS['config']['session']['redisPassword']) && !empty($GLOBALS['config']['session']['redisPassword'])) {
+                if (isset($GLOBALS['config']['session']['redisPassword']) && !empty($GLOBALS['config']['session']['redisPassword'])) {
                     $redis_params['password'] = $GLOBALS['config']['session']['redisPassword'];
                 }
 
-                $redis_params['database'] = (isset($GLOBALS['config']['session']['redisDatabase']) && !empty($GLOBALS['config']['session']['redisDatabase']))?$GLOBALS['config']['session']['redisDatabase']:0;
+                $redis_params['database'] = (isset($GLOBALS['config']['session']['redisDatabase']) && !empty($GLOBALS['config']['session']['redisDatabase'])) ? $GLOBALS['config']['session']['redisDatabase'] : 0;
 
                 //Create Redis Client
                 $redis_db = new Client($redis_params);
 
                 //Register Custom Session Handler
-                $sessHandler = new RedisSessionHandler($redis_db, $GLOBALS['config']['session']['timeout'], $GLOBALS['config']['session']['name']. ":");
+                $sessHandler = new RedisSessionHandler($redis_db, $GLOBALS['config']['session']['timeout'], $GLOBALS['config']['session']['name'] . ":");
                 session_set_save_handler($sessHandler);
             }
 
@@ -237,7 +236,7 @@ class SpeediFii
             $sessionId = session_id();
         }
 
-        define('PROCESS_UUID',UUID::v4());
+        define('PROCESS_UUID', UUID::v4());
 
         define('LOG_IDENTIFIER', ($sessionId ? $sessionId . ' | ' : '') . PROCESS_UUID);
 
@@ -322,10 +321,34 @@ class SpeediFii
      * Helper method to write logs
      * @return Logger
      */
-    public static function log() {
+    public static function log()
+    {
         return Logger::getLogger();
     }
 
+    /**
+     * Helper method to add language support for multiple languages
+     * @param string The Language Text key
+     * @param array Associative array containing replacements. Keys are case sensitive!
+     * @param string The language to be used. Defaults to current language
+     * @return string The resulting parsed string from language files based on passed language
+     */
+    public static function __($langKey, $replacements = array(), $language = null)
+    {
+        if(empty($language)) {
+            $language = $GLOBALS['config']['application']['language'];
+        }
+        $language = (!in_array($language, array_keys($GLOBALS['language']))) ? $GLOBALS['config']['application']['language'] : $language;
+        $langText = $GLOBALS['language'][$language][$langKey];
+        if (empty($replacements)) {
+            return $langText;
+        }
+        $langTextParsed = str_replace(
+            array_keys($replacements),
+            array_values($replacements),
+            $langText);
+        return (!empty($langTextParsed) && !is_array($langTextParsed)) ? $langTextParsed : $langText;
+    }
 }
 
 /* EOF */
